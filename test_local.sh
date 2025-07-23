@@ -1,10 +1,13 @@
-# test_local.sh
 #!/bin/bash
-
+# test_local.sh
 echo "🧪 Testing Farmer Assistant MVP locally"
 
-# Activate virtual environment
-source venv/bin/activate
+# Check if virtual environment is activated
+if [[ "$VIRTUAL_ENV" == "" ]]; then
+    echo "⚠️  Warning: No virtual environment detected. Make sure you have activated your venv."
+    echo "   Run: source venv/bin/activate"
+    echo ""
+fi
 
 # Set environment for local testing
 export GOOGLE_CLOUD_PROJECT=$(gcloud config get-value project)
@@ -20,12 +23,7 @@ else
     exit 1
 fi
 
-echo "🚀 Starting local Flask server..."
-echo "🌐 Web interface will be available at: http://localhost:5000"
-echo "📡 Cloud Function simulation at: http://localhost:8080"
+echo "🎯 Tests completed successfully!"
 echo ""
-echo "Press Ctrl+C to stop the server"
-
-# Start Flask app
-cd webapp
-python app.py
+echo "To run the full application (frontend + backend), use:"
+echo "   ./run_app.sh"
