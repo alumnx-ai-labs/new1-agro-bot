@@ -49,7 +49,7 @@ class ManagerAgent:
         - If text mentions diseases, pests, problems with crops, it's disease_detection
         - Everything else is general_query for now
         
-        Respond ONLY with valid JSON in this format:
+        Respond with ONLY valid JSON (no markdown, no code blocks) in this format:
         {{
             "intent": "disease_detection",
             "confidence": 0.95,
