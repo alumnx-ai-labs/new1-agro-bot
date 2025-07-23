@@ -1,4 +1,4 @@
-venv
+# .gitignore
 # Create .gitignore to protect sensitive files
 cat > .gitignore << 'EOF'
 # Environment variables

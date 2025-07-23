@@ -1,3 +1,4 @@
+# test_local.sh
 #!/bin/bash
 
 echo "🧪 Testing Farmer Assistant MVP locally"

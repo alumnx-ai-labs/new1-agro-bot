@@ -1,3 +1,4 @@
+# deploy.sh
 #!/bin/bash
 
 echo "🚀 Deploying Farmer Assistant MVP to Google Cloud"

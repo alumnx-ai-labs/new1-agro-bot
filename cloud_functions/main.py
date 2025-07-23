@@ -1,3 +1,4 @@
+# cloud_functions/main.py
 import functions_framework
 import json
 import logging

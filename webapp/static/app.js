@@ -1,3 +1,4 @@
+// webapp/static/app.js
 class FarmerAssistant {
     constructor() {
         this.selectedImageData = null;

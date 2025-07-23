@@ -1,3 +1,4 @@
+# setup.sh
 #!/bin/bash
 
 echo "🌱 Setting up Farmer Assistant MVP - Phase 1"

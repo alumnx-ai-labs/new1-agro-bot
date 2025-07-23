@@ -1,3 +1,4 @@
+# utils/gemini_client.py
 import base64
 import json
 import logging
