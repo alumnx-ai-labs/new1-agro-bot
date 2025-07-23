@@ -13,8 +13,8 @@ class Config:
     FIRESTORE_DATABASE = os.getenv('FIRESTORE_DATABASE', '(default)')
     
     # Gemini Model Settings
-    GEMINI_PRO_MODEL = "gemini-1.5-pro"
-    GEMINI_FLASH_MODEL = "gemini-1.5-flash"
+    GEMINI_PRO_MODEL = "gemini-2.5-flash"
+    GEMINI_FLASH_MODEL = "gemini-2.5-flash-lite"
     
     # App Settings
     DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'

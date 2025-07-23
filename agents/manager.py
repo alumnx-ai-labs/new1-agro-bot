@@ -65,8 +65,11 @@ class ManagerAgent:
         try:
             response = self.gemini_client.generate_text_flash(classification_prompt)
             
+            # Clean JSON response (remove markdown wrappers)
+            cleaned_response = self.clean_json_response(response)
+            
             # Try to parse JSON response
-            classification = json.loads(response)
+            classification = json.loads(cleaned_response)
             
             # Validate required fields
             if 'intent' not in classification:
@@ -269,3 +272,13 @@ class ManagerAgent:
             
         except Exception as e:
             logger.error(f"Failed to log response: {e}")
+
+    def clean_json_response(self, response: str) -> str:
+        """Clean JSON response by removing markdown code blocks"""
+        import re
+        
+        # Remove ```json and ``` wrappers
+        cleaned = re.sub(r'^```json\s*', '', response.strip(), flags=re.MULTILINE)
+        cleaned = re.sub(r'\s*```$', '', cleaned.strip(), flags=re.MULTILINE)
+        
+        return cleaned.strip()
