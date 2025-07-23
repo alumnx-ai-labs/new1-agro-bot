@@ -41,7 +41,7 @@ def analyze():
             f'{CLOUD_FUNCTION_URL}/farmer_assistant',
             json=data,
             headers={'Content-Type': 'application/json'},
-            timeout=30
+            timeout=120
         )
         
         if response.status_code == 200:

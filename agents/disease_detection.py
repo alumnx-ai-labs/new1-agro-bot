@@ -31,13 +31,24 @@ class DiseaseDetectionAgent:
             # Create comprehensive analysis prompt
             analysis_prompt = self.create_analysis_prompt(input_data, entities)
             
-            # Analyze image using Gemini Pro Vision
-            analysis_result = self.gemini_client.analyze_image(
-                analysis_prompt, 
-                input_data['image_data']
-            )
-            
-            # Try to parse structured response
+            # Analyze image using Gemini Pro Vision with retry logic
+            max_retries = 2
+            for attempt in range(max_retries):
+                analysis_result = self.gemini_client.analyze_image(
+                    analysis_prompt, 
+                    input_data['image_data']
+                )
+                
+                # Check if response seems complete
+                if len(analysis_result) > 100 and analysis_result.strip().endswith('}'):
+                    break
+                
+                logger.warning(f"Attempt {attempt + 1}: Response seems incomplete, retrying...")
+                
+                if attempt == max_retries - 1:
+                    logger.error(f"Final response after {max_retries} attempts: {analysis_result}")
+                        
+                        # Try to parse structured response
             try:
                 # Clean JSON response (remove markdown wrappers)
                 cleaned_response = self.clean_json_response(analysis_result)
@@ -130,10 +141,13 @@ class DiseaseDetectionAgent:
         4. If plant looks healthy, say so clearly
         5. Always provide actionable advice
         6. Consider Indian climate and farming practices
+        
+        CRITICAL: Return ONLY the JSON object. Do not wrap in ```json or ``` blocks. Start directly with {{ and end with }}.
         """
         
         return prompt
     
+
     def enhance_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
         """Enhance and validate the structured response"""
         
@@ -194,11 +208,27 @@ class DiseaseDetectionAgent:
         }
     
     def clean_json_response(self, response: str) -> str:
-        """Clean JSON response by removing markdown code blocks"""
+        """Clean and validate JSON response"""
         import re
         
-        # Remove ```json and ``` wrappers
+        # Log the raw response for debugging
+        logger.info(f"Raw response length: {len(response)}")
+        logger.info(f"Raw response preview: {response[:300]}")
+        
+        # Remove markdown wrappers
         cleaned = re.sub(r'^```json\s*', '', response.strip(), flags=re.MULTILINE)
         cleaned = re.sub(r'\s*```$', '', cleaned.strip(), flags=re.MULTILINE)
+        
+        # Try to find a complete JSON object
+        if not cleaned.strip().startswith('{'):
+            # Look for the first { and try to extract JSON
+            start_idx = cleaned.find('{')
+            if start_idx != -1:
+                cleaned = cleaned[start_idx:]
+        
+        # Check if JSON seems complete
+        if not cleaned.strip().endswith('}'):
+            logger.warning("JSON response appears incomplete")
+            logger.warning(f"Response ends with: {cleaned[-50:]}")
         
         return cleaned.strip()
