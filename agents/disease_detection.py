@@ -39,7 +39,9 @@ class DiseaseDetectionAgent:
             
             # Try to parse structured response
             try:
-                structured_response = json.loads(analysis_result)
+                # Clean JSON response (remove markdown wrappers)
+                cleaned_response = self.clean_json_response(analysis_result)
+                structured_response = json.loads(cleaned_response)
                 
                 # Validate and enhance response
                 enhanced_response = self.enhance_response(structured_response)
@@ -190,3 +192,13 @@ class DiseaseDetectionAgent:
             'success_timeline': 'Depends on treatment approach',
             'detailed_text': raw_text
         }
+    
+    def clean_json_response(self, response: str) -> str:
+        """Clean JSON response by removing markdown code blocks"""
+        import re
+        
+        # Remove ```json and ``` wrappers
+        cleaned = re.sub(r'^```json\s*', '', response.strip(), flags=re.MULTILINE)
+        cleaned = re.sub(r'\s*```$', '', cleaned.strip(), flags=re.MULTILINE)
+        
+        return cleaned.strip()
