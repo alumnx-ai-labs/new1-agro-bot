@@ -164,11 +164,20 @@ class FarmerAssistant {
         
         const resultsContainer = document.getElementById('analysisResults');
         
+        // Store result for debugging
+        this.lastResult = result;
+        
+        let htmlContent = '';
         if (result.agent_response && result.agent_response.analysis) {
-            resultsContainer.innerHTML = this.createDiseaseAnalysisHTML(result.agent_response.analysis);
+            htmlContent = this.createDiseaseAnalysisHTML(result.agent_response.analysis);
         } else {
-            resultsContainer.innerHTML = this.createSimpleResponseHTML(result);
+            htmlContent = this.createSimpleResponseHTML(result);
         }
+        
+        // Add debug panel
+        htmlContent += this.createDebugPanel(result);
+        
+        resultsContainer.innerHTML = htmlContent;
     }
     
     createDiseaseAnalysisHTML(analysis) {
@@ -298,6 +307,20 @@ class FarmerAssistant {
             localStorage.setItem('farmerAssistantUserId', userId);
         }
         return userId;
+    }
+
+    createDebugPanel(result) {
+        return `
+            <div class="debug-panel">
+                <button class="debug-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    🔍 Show Debug Info
+                </button>
+                <div class="debug-content" style="display: none;">
+                    <strong>Full Response:</strong>
+                    ${JSON.stringify(result, null, 2)}
+                </div>
+            </div>
+        `;
     }
 }
 

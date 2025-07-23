@@ -164,6 +164,9 @@ textarea:focus {
     padding: 30px;
     border-radius: 10px;
     border: 1px solid #e9ecef;
+    max-height: 80vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 
 .results-section h2 {
@@ -304,3 +307,34 @@ footer {
         gap: 10px;
     }
 }
+
+/* Debug Panel */
+.debug-panel {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.debug-toggle {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.debug-content {
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+    white-space: pre-wrap;
+}   
