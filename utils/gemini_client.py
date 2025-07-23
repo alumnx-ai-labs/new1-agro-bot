@@ -91,12 +91,17 @@ class GeminiClient:
                 [prompt, image_part],
                 safety_settings=self.safety_config,
                 generation_config={
-                    "max_output_tokens": 2048,
+                    "max_output_tokens": 4096,  # Increased limit
                     "temperature": 0.1,
+                    "top_p": 0.8,
                 }
             )
             
-            logger.info("Image analysis successful")
+            # Log the full response for debugging
+            logger.info(f"Image analysis successful - Response length: {len(response.text)}")
+            logger.info(f"First 200 chars: {response.text[:200]}")
+            logger.info(f"Last 200 chars: {response.text[-200:]}")
+            
             return response.text
             
         except Exception as e:
