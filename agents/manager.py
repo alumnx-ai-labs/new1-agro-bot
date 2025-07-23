@@ -1,7 +1,9 @@
 # agents/manager.py
 import json
 import logging
+import os
 from typing import Dict, Any
+from datetime import datetime
 from utils.gemini_client import GeminiClient
 from utils.firestore_client import FirestoreClient
 from agents.disease_detection import DiseaseDetectionAgent
@@ -167,15 +169,26 @@ class ManagerAgent:
             )
             
             logger.info(f"Request processed successfully for session: {session_id}")
-            
-            return {
+
+            final_result = {
                 'session_id': session_id,
                 'classification': classification,
                 'agent_response': agent_response,
                 'final_response': final_response,
-                'status': 'success'
+                'status': 'success',
+                'debug_info': {
+                    'model_used': 'gemini-1.5-pro',
+                    'processing_time': 'calculated_in_production',
+                    'confidence': agent_response.get('confidence', 'unknown') if agent_response else 'unknown'
+                }
             }
-            
+
+            # Log full response (can be disabled via environment variable)
+            enable_logging = os.getenv('ENABLE_RESPONSE_LOGGING', 'true').lower() == 'true'
+            self.log_full_response(session_id, final_result, enable_logging)
+
+            return final_result
+                        
         except Exception as e:
             logger.error(f"Request processing failed: {e}")
             
@@ -234,3 +247,25 @@ class ManagerAgent:
             'message': agent_response.get('message', 'Request processed.'),
             'type': agent_response.get('type', 'general'),
         }
+    
+    def log_full_response(self, session_id: str, response_data: Dict[str, Any], enable_logging: bool = True):
+        """Log complete response for debugging"""
+        if not enable_logging:
+            return
+            
+        try:
+            log_entry = {
+                'timestamp': datetime.now().isoformat(),
+                'session_id': session_id,
+                'response_type': response_data.get('final_response', {}).get('type', 'unknown'),
+                'full_response': response_data
+            }
+            
+            # Log to console
+            logger.info(f"FULL_RESPONSE_LOG: {json.dumps(log_entry, indent=2)}")
+            
+            # Save to Firestore for debugging
+            self.firestore_client.db.collection('response_logs').document(session_id).set(log_entry)
+            
+        except Exception as e:
+            logger.error(f"Failed to log response: {e}")
