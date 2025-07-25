@@ -71,6 +71,56 @@ header p {
     transform: translateY(-2px);
 }
 
+/* Language Select */
+.language-select {
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    transition: border-color 0.3s ease;
+}
+
+.language-select:focus {
+    outline: none;
+    border-color: #4a7c59;
+}
+
+/* Audio Controls */
+.audio-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.recording-status {
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    min-height: 20px;
+}
+
+.recording-status.recording {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef5350;
+}
+
+.recording-status.ready {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border: 1px solid #66bb6a;
+}
+
+.recording-status.processing {
+    background: #fff3e0;
+    color: #ef6c00;
+    border: 1px solid #ffb74d;
+}
+
 /* Mode Sections */
 .mode-section {
     display: none;
@@ -675,4 +725,53 @@ footer {
         border: 5px solid #f3f3f3;
         border-top: 5px solid #4a7c59;
     }
+}
+
+
+
+/* Transcription Styles */
+.transcription-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.transcription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.transcription-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2c5530;
+}
+
+.transcript-box {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #4a7c59;
+    margin: 15px 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    min-height: 60px;
+    white-space: pre-wrap;
+}
+
+.transcript-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.transcription-error {
+    background: #ffebee;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #f44336;
 }
