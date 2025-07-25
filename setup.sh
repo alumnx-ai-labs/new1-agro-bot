@@ -11,13 +11,13 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-python_version=$(python3 --version 2>&1 | grep -Po '(?<=Python )\d+\.\d+' || echo "0.0")
-if (( $(echo "$python_version < 3.8" | bc -l 2>/dev/null || echo "1") )); then
-    echo "❌ Python 3.8+ required. Current version: $python_version"
-    echo "   Please install a newer Python version"
-    exit 1
-fi
-echo "✅ Python $python_version detected"
+# python_version=$(python3 --version 2>&1 | grep -Po '(?<=Python )\d+\.\d+' || echo "0.0")
+# if (( $(echo "$python_version < 3.8" | bc -l 2>/dev/null || echo "1") )); then
+#     echo "❌ Python 3.8+ required. Current version: $python_version"
+#     echo "   Please install a newer Python version"
+#     exit 1
+# fi
+# echo "✅ Python $python_version detected"
 
 # Step 2: Check Google Cloud SDK
 echo "☁️  Checking Google Cloud SDK..."
@@ -104,7 +104,7 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "🚀 Next steps:"
     echo "   1. Run the application: ./run_app.sh"
-    echo "   2. Open browser to: http://localhost:5000"
+    echo "   2. Open browser to: http://localhost:5500"
     echo "   3. Deploy to cloud: ./deploy.sh"
     echo ""
     echo "💡 Useful commands:"
