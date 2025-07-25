@@ -775,3 +775,28 @@ footer {
     border-radius: 8px;
     border-left: 4px solid #f44336;
 }
+
+/* Audio Playback Styles */
+.audio-playback-container {
+    margin-top: 20px;
+}
+
+.audio-playback {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #4a7c59;
+    text-align: center;
+}
+
+.audio-playback h4 {
+    color: #4a7c59;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.audio-playback audio {
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}

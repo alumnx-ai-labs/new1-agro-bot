@@ -246,7 +246,16 @@ class FarmerAssistant {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-            this.mediaRecorder = new MediaRecorder(stream);
+            // Try to use better audio codec
+const options = {
+    mimeType: 'audio/webm;codecs=opus'
+};
+
+if (MediaRecorder.isTypeSupported(options.mimeType)) {
+    this.mediaRecorder = new MediaRecorder(stream, options);
+} else {
+    this.mediaRecorder = new MediaRecorder(stream);
+}
             this.audioChunks = [];
 
             this.mediaRecorder.addEventListener('dataavailable', (event) => {
@@ -254,9 +263,9 @@ class FarmerAssistant {
             });
 
             this.mediaRecorder.addEventListener('stop', () => {
-                const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                this.convertAudioToBase64(audioBlob);
-            });
+    const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+    this.convertAudioToBase64(audioBlob);
+});
 
             this.mediaRecorder.start();
 
@@ -294,10 +303,31 @@ class FarmerAssistant {
         reader.onload = () => {
             // Remove data URL prefix to get pure base64
             this.recordedAudioData = reader.result.split(',')[1];
+
+            // Create audio URL for playback
+            this.audioUrl = URL.createObjectURL(audioBlob);
+
+            // Show playback controls
+            this.showAudioPlayback();
+
             document.getElementById('transcribeBtn').disabled = false;
             console.log('✅ Audio converted to base64');
         };
         reader.readAsDataURL(audioBlob);
+    }
+
+    showAudioPlayback() {
+        const playbackContainer = document.getElementById('audioPlayback');
+        playbackContainer.innerHTML = `
+        <div class="audio-playback">
+            <h4>🎵 Preview Recorded Audio:</h4>
+            <audio controls style="width: 100%; margin: 10px 0;">
+                <source src="${this.audioUrl}" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    `;
+        playbackContainer.style.display = 'block';
     }
 
     async transcribeAudio() {
@@ -641,7 +671,12 @@ class FarmerAssistant {
             document.getElementById('transcribeBtn').disabled = true;
             document.getElementById('recordingStatus').textContent = '';
             document.getElementById('recordingStatus').className = 'recording-status';
+            document.getElementById('audioPlayback').style.display = 'none';
             this.recordedAudioData = null;
+            if (this.audioUrl) {
+                URL.revokeObjectURL(this.audioUrl);
+                this.audioUrl = null;
+            }
         }
 
         this.currentSessionId = null;
