@@ -98,6 +98,15 @@ def process_input(input_type: str, content: str, language: str, query_type: str 
             'input_type': input_type
         }
     
+    elif input_type == 'audio':
+        # For speech-to-text
+        return {
+            'type': 'audio',
+            'audio_data': content,
+            'language': language,
+            'input_type': input_type
+        }
+    
     elif input_type == 'text':
         # For text queries (including government schemes)
         processed = {

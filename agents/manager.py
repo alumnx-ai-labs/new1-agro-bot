@@ -7,6 +7,7 @@ from datetime import datetime
 from utils.gemini_client import GeminiClient
 from utils.firestore_client import FirestoreClient
 from agents.disease_detection import DiseaseDetectionAgent
+from agents.stt_agent import STTAgent
 from agents.rag_agent import RAGAgent
 
 logging.basicConfig(level=logging.INFO)
@@ -23,6 +24,7 @@ class ManagerAgent:
         
         # Initialize available agents
         self.disease_agent = DiseaseDetectionAgent()
+        self.stt_agent = STTAgent()
         
         # Initialize RAG agent with error handling
         try:
@@ -36,6 +38,7 @@ class ManagerAgent:
         # Agent registry for easy expansion
         self.agents = {
             'disease_detection': self.disease_agent,
+            'speech_to_text': self.stt_agent,
         }
         
         if rag_available:
@@ -54,17 +57,19 @@ class ManagerAgent:
         Available categories:
         1. "disease_detection" - Image of plant/crop with disease, pest, or health issues
         2. "government_schemes" - Questions about government schemes, subsidies, loans, policies for farmers
-        3. "general_query" - Any other farming question
+        3. "speech_to_text" - Audio file for transcription
+        4. "general_query" - Any other farming question
         
         Input Data: {json.dumps(input_data, indent=2)}
         
         Classification Rules:
+        - If there's audio data (audio_data present), classify as "speech_to_text"
         - If there's an image (image_data present), it's likely "disease_detection"
         - If queryType is "government_schemes", classify as "government_schemes"
         - If text mentions schemes, subsidies, loans, policies, PM-KISAN, government support, etc., classify as "government_schemes"
         - If text mentions diseases, pests, problems with crops, classify as "disease_detection"
         - Everything else is "general_query"
-        
+                
         Respond with ONLY valid JSON (no markdown, no code blocks) in this format:
         {{
             "intent": "government_schemes",
@@ -205,6 +210,18 @@ class ManagerAgent:
                         'agent': 'manager_fallback'
                     }
                 
+            elif intent == 'speech_to_text':
+                self.firestore_client.add_manager_thought(
+                    session_id,
+                    "🎤 Transcribing your audio..."
+                )
+                
+                # Extract audio data and language
+                audio_data = input_data.get('audio_data', '')
+                language = input_data.get('language', 'english')
+                
+                agent_response = self.stt_agent.transcribe_audio(audio_data, language)
+
             else:  # general_query or fallback
                 self.firestore_client.add_manager_thought(
                     session_id,
@@ -215,10 +232,10 @@ class ManagerAgent:
                     'type': 'general_response',
                     'message': """Thank you for your question! I can help you with:
                     
-🔬 **Crop Disease Detection** - Upload an image of your crop to identify diseases and get treatment advice
-🏛️ **Government Schemes** - Ask about subsidies, loans, and support schemes for farmers
+                    🔬 **Crop Disease Detection** - Upload an image of your crop to identify diseases and get treatment advice
+                    🏛️ **Government Schemes** - Ask about subsidies, loans, and support schemes for farmers
 
-Please specify what you'd like help with!""",
+                    Please specify what you'd like help with!""",
                     'agent': 'manager_fallback'
                 }
             
@@ -336,6 +353,22 @@ Please specify what you'd like help with!""",
                 'confidence': agent_response.get('confidence', 'medium')
             }
         
+        elif classification['intent'] == 'speech_to_text':
+            if agent_response.get('success'):
+                message = f"🎤 **Transcription**: {agent_response['transcript']}"
+                if agent_response.get('confidence'):
+                    message += f"\n📊 **Confidence**: {agent_response['confidence']:.2f}"
+            else:
+                message = f"❌ **Transcription failed**: {agent_response.get('error', 'Unknown error')}"
+            
+            return {
+                'message': message,
+                'type': 'speech_to_text',
+                'transcript': agent_response.get('transcript', ''),
+                'confidence': agent_response.get('confidence', 0),
+                'success': agent_response.get('success', False)
+            }
+
         # For general responses
         return {
             'message': agent_response.get('message', 'Request processed.'),
