@@ -32,3 +32,6 @@ Thumbs.db
 EOF
 
 .pytest_cache/
+
+google-cloud-sdk
+google-cloud-sdk-471.0.0-darwin-arm.tar.gz

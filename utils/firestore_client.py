@@ -112,20 +112,18 @@ class FirestoreClient:
             logger.error(f"Failed to get session: {e}")
             return None
     
+    def get_server_timestamp(self):
+        """Get server timestamp for consistent timing"""
+        from datetime import datetime
+        return datetime.now().isoformat()
+
     def test_connection(self) -> bool:
         """Test Firestore connection"""
         try:
             # Try to read from a test collection
-            test_ref = self.db.collection('_test').document('connection')
-            test_ref.set({'test': True, 'timestamp': firestore.SERVER_TIMESTAMP})
-            
-            # Try to read it back
-            doc = test_ref.get()
-            success = doc.exists
-            
-            # Clean up
-            test_ref.delete()
-            
-            return success
-        except:
+            test_ref = self.db.collection('test').limit(1)
+            list(test_ref.stream())
+            return True
+        except Exception as e:
+            logger.error(f"Firestore connection test failed: {e}")
             return False

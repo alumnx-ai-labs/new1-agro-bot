@@ -1,50 +1,139 @@
 <!-- webapp/templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Assistant MVP</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <header>
             <h1>🌱 Farmer Assistant MVP</h1>
-            <p>Upload crop images for disease detection</p>
+            <p>Upload crop images for disease detection or query government schemes</p>
         </header>
 
         <main>
-            <!-- Input Section -->
-            <div class="input-section">
-                <div class="input-group">
-                    <label for="imageInput" class="btn btn-primary">
-                        📸 Upload Crop Image
-                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-                    </label>
+            <!-- Mode Selection -->
+            <div class="mode-selection">
+                <button id="diseaseMode" class="mode-btn active">
+                    🔬 Crop Disease Detection
+                </button>
+                <button id="schemesMode" class="mode-btn">
+                    🏛️ Government Schemes
+                </button>
+                <button id="talkMode" class="mode-btn">
+                    🎤 Talk Now
+                </button>
+            </div>
+
+            <!-- Disease Detection Section -->
+            <div id="diseaseSection" class="mode-section active">
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="imageInput" class="btn btn-primary">
+                            📸 Upload Crop Image
+                            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        </label>
+                    </div>
+
+                    <div class="input-group">
+                        <textarea id="textInput"
+                            placeholder="Describe any symptoms you notice (optional)..."></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <button id="analyzeBtn" class="btn btn-success" disabled>
+                            🔍 Analyze Crop
+                        </button>
+                    </div>
                 </div>
-                
-                <div class="input-group">
-                    <textarea id="textInput" placeholder="Describe any symptoms you notice (optional)..."></textarea>
+            </div>
+
+            <!-- Government Schemes Section -->
+            <div id="schemesSection" class="mode-section">
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="schemeQuery">Ask about Government Schemes:</label>
+                        <textarea id="schemeQueryInput"
+                            placeholder="e.g., What are the subsidies available for organic farming? What schemes are there for small farmers? Tell me about PM-KISAN scheme..."></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <button id="querySchemeBtn" class="btn btn-success">
+                            🔍 Search Schemes
+                        </button>
+                    </div>
+
+                    <div class="scheme-examples">
+                        <p><strong>Example queries:</strong></p>
+                        <div class="example-chips">
+                            <span class="example-chip"
+                                data-query="What subsidies are available for drip irrigation?">Irrigation
+                                Subsidies</span>
+                            <span class="example-chip"
+                                data-query="Tell me about PM-KISAN scheme eligibility and benefits">PM-KISAN
+                                Scheme</span>
+                            <span class="example-chip" data-query="What are the loan schemes for dairy farming?">Dairy
+                                Farming Loans</span>
+                            <span class="example-chip"
+                                data-query="Organic farming certification and support schemes">Organic Farming
+                                Support</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="input-group">
-                    <button id="analyzeBtn" class="btn btn-success" disabled>
-                        🔍 Analyze Crop
-                    </button>
+            </div>
+
+            <!-- Talk Now Section -->
+            <div id="talkSection" class="mode-section">
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="languageSelect">Select Language:</label>
+                        <select id="languageSelect" class="language-select">
+                            <option value="english">English</option>
+                            <option value="hindi">Hindi (हिन्दी)</option>
+                            <option value="bengali">Bengali (বাংলা)</option>
+                            <option value="tamil">Tamil (தமிழ்)</option>
+                            <option value="telugu">Telugu (తెలుగు)</option>
+                            <option value="marathi">Marathi (मराठी)</option>
+                            <option value="gujarati">Gujarati (ગુજરાતી)</option>
+                            <option value="kannada">Kannada (ಕನ್ನಡ)</option>
+                            <option value="malayalam">Malayalam (മലയാളം)</option>
+                            <option value="punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="audio-controls">
+                            <button id="recordBtn" class="btn btn-primary">
+                                🎤 Start Recording
+                            </button>
+                            <button id="stopBtn" class="btn btn-secondary" disabled>
+                                ⏹️ Stop Recording
+                            </button>
+                            <button id="transcribeBtn" class="btn btn-success" disabled>
+                                📝 Transcribe Audio
+                            </button>
+                        </div>
+                        <div id="recordingStatus" class="recording-status"></div>
+                        <div id="audioPlayback" class="audio-playback-container" style="display: none;"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- Loading Section -->
             <div id="loadingSection" class="loading-section" style="display: none;">
                 <div class="spinner"></div>
-                <p>Analyzing your crop image...</p>
+                <p id="loadingText">Processing your request...</p>
                 <div id="managerThoughts" class="manager-thoughts"></div>
             </div>
 
             <!-- Results Section -->
             <div id="resultsSection" class="results-section" style="display: none;">
-                <h2>Analysis Results</h2>
+                <h2 id="resultsTitle">Analysis Results</h2>
                 <div id="analysisResults"></div>
             </div>
 
@@ -57,10 +146,11 @@
         </main>
 
         <footer>
-            <p>Phase 1 MVP - Disease Detection Agent</p>
+            <p>Phase 1 MVP - Disease Detection & Government Schemes Query</p>
         </footer>
     </div>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
+
 </html>
