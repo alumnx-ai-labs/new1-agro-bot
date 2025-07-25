@@ -115,3 +115,43 @@ class GeminiClient:
             return "successful" in test_response.lower()
         except:
             return False
+        
+    def analyze_audio(self, prompt: str, audio_data: str) -> str:
+        """Audio analysis using Gemini Pro"""
+        try:
+            # Convert base64 to Part object
+            audio_bytes = base64.b64decode(audio_data)
+            
+            # Try different mime types for better compatibility
+            mime_types = ["audio/webm", "audio/wav", "audio/mp3", "audio/mpeg"]
+            
+            for mime_type in mime_types:
+                try:
+                    audio_part = Part.from_data(
+                        mime_type=mime_type,
+                        data=audio_bytes
+                    )
+                    
+                    response = self.pro_model.generate_content(
+                        [prompt, audio_part],
+                        safety_settings=self.safety_config,
+                        generation_config={
+                            "max_output_tokens": 1024,
+                            "temperature": 0.1,  # Lower for more accurate transcription
+                            "top_p": 0.8,
+                        }
+                    )
+                    
+                    logger.info(f"Audio analysis successful with {mime_type}")
+                    return response.text
+                    
+                except Exception as mime_error:
+                    logger.warning(f"Failed with {mime_type}: {mime_error}")
+                    continue
+            
+            # If all mime types fail, return error
+            raise Exception("All audio formats failed")
+            
+        except Exception as e:
+            logger.error(f"Audio analysis failed: {e}")
+            return f"I couldn't analyze the audio properly: {str(e)}"
