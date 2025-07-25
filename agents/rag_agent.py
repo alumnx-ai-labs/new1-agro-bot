@@ -19,9 +19,11 @@ class RAGAgent:
         
         # Try to initialize vector store, but don't fail if it's not available
         try:
-            self.vector_store_client = VectorStoreClient()
+            # Use simplified vector client instead of complex Vector Search
+            from utils.simplified_vector_client import SimplifiedVectorClient
+            self.vector_store_client = SimplifiedVectorClient()
             self.vector_search_available = True
-            logger.info("RAGAgent initialized with Google AI Vector Search")
+            logger.info("RAGAgent initialized with Simplified Vector Search (Vertex AI + Firestore)")
         except Exception as e:
             logger.warning(f"Vector search not available: {e}")
             self.vector_store_client = None
