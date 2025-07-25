@@ -129,3 +129,9 @@ class FirestoreClient:
             return success
         except:
             return False
+
+
+def get_server_timestamp(self):
+    """Get server timestamp for consistent timing"""
+    from datetime import datetime
+    return datetime.now().isoformat()

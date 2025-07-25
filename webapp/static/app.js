@@ -4,26 +4,72 @@ class FarmerAssistant {
         this.selectedImageData = null;
         this.currentSessionId = null;
         this.managerThoughtsInterval = null;
+        this.currentMode = 'disease'; // 'disease' or 'schemes'
         
         this.initializeEventListeners();
         this.checkHealth();
     }
     
     initializeEventListeners() {
-        // Image input
+        // Mode selection buttons
+        document.getElementById('diseaseMode').addEventListener('click', () => {
+            this.switchMode('disease');
+        });
+        
+        document.getElementById('schemesMode').addEventListener('click', () => {
+            this.switchMode('schemes');
+        });
+        
+        // Disease detection listeners
         document.getElementById('imageInput').addEventListener('change', (e) => {
             this.handleImageSelection(e);
         });
         
-        // Analyze button
         document.getElementById('analyzeBtn').addEventListener('click', () => {
             this.analyzeImage();
+        });
+        
+        // Government schemes listeners
+        document.getElementById('querySchemeBtn').addEventListener('click', () => {
+            this.queryGovernmentSchemes();
+        });
+        
+        document.getElementById('schemeQueryInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.queryGovernmentSchemes();
+            }
+        });
+        
+        // Example chip listeners
+        document.querySelectorAll('.example-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const query = chip.getAttribute('data-query');
+                document.getElementById('schemeQueryInput').value = query;
+            });
         });
         
         // Retry button
         document.getElementById('retryBtn').addEventListener('click', () => {
             this.resetInterface();
         });
+    }
+    
+    switchMode(mode) {
+        this.currentMode = mode;
+        this.resetInterface();
+        
+        // Update UI
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.mode-section').forEach(section => section.classList.remove('active'));
+        
+        if (mode === 'disease') {
+            document.getElementById('diseaseMode').classList.add('active');
+            document.getElementById('diseaseSection').classList.add('active');
+        } else {
+            document.getElementById('schemesMode').classList.add('active');
+            document.getElementById('schemesSection').classList.add('active');
+        }
     }
     
     async checkHealth() {
@@ -87,7 +133,7 @@ class FarmerAssistant {
             return;
         }
         
-        this.showLoading();
+        this.showLoading('Analyzing your crop image...');
         
         try {
             const textDescription = document.getElementById('textInput').value.trim();
@@ -115,7 +161,7 @@ class FarmerAssistant {
             if (response.ok) {
                 console.log('✅ Analysis successful:', result);
                 this.currentSessionId = result.session_id;
-                this.displayResults(result);
+                this.displayResults(result, 'Disease Analysis Results');
             } else {
                 console.error('❌ Analysis failed:', result);
                 this.showError(result.error || 'Analysis failed');
@@ -127,16 +173,68 @@ class FarmerAssistant {
         }
     }
     
-    showLoading() {
+    async queryGovernmentSchemes() {
+        const queryText = document.getElementById('schemeQueryInput').value.trim();
+        
+        if (!queryText) {
+            alert('Please enter your question about government schemes.');
+            return;
+        }
+        
+        this.showLoading('Searching government schemes database...');
+        
+        try {
+            const requestData = {
+                inputType: 'text',
+                content: queryText,
+                userId: this.getUserId(),
+                language: 'en',
+                queryType: 'government_schemes'
+            };
+            
+            console.log('📤 Sending schemes query request...');
+            
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                console.log('✅ Schemes query successful:', result);
+                this.currentSessionId = result.session_id;
+                this.displayResults(result, 'Government Schemes Information');
+            } else {
+                console.error('❌ Schemes query failed:', result);
+                this.showError(result.error || 'Query failed');
+            }
+            
+        } catch (error) {
+            console.error('❌ Request failed:', error);
+            this.showError('Network error. Please check your connection and try again.');
+        }
+    }
+    
+    showLoading(message = 'Processing your request...') {
         document.getElementById('loadingSection').style.display = 'block';
         document.getElementById('resultsSection').style.display = 'none';
         document.getElementById('errorSection').style.display = 'none';
         
-        // Show manager thoughts
-        this.startManagerThoughts();
+        document.getElementById('loadingText').textContent = message;
+        
+        // Show appropriate manager thoughts
+        if (this.currentMode === 'disease') {
+            this.startDiseaseAnalysisThoughts();
+        } else {
+            this.startSchemesQueryThoughts();
+        }
     }
     
-    startManagerThoughts() {
+    startDiseaseAnalysisThoughts() {
         const thoughts = [
             "🤔 Analyzing your crop image...",
             "🎯 Identifying potential issues...",
@@ -144,6 +242,21 @@ class FarmerAssistant {
             "✅ Analysis complete! Preparing response..."
         ];
         
+        this.displayThoughts(thoughts);
+    }
+    
+    startSchemesQueryThoughts() {
+        const thoughts = [
+            "🤔 Understanding your query...",
+            "🔍 Searching government schemes database...",
+            "📊 Finding relevant schemes and policies...",
+            "✅ Query complete! Preparing information..."
+        ];
+        
+        this.displayThoughts(thoughts);
+    }
+    
+    displayThoughts(thoughts) {
         const thoughtsContainer = document.getElementById('managerThoughts');
         thoughtsContainer.innerHTML = '';
         
@@ -157,19 +270,23 @@ class FarmerAssistant {
         });
     }
     
-    displayResults(result) {
+    displayResults(result, title) {
         document.getElementById('loadingSection').style.display = 'none';
         document.getElementById('resultsSection').style.display = 'block';
         document.getElementById('errorSection').style.display = 'none';
         
+        document.getElementById('resultsTitle').textContent = title;
         const resultsContainer = document.getElementById('analysisResults');
         
         // Store result for debugging
         this.lastResult = result;
         
         let htmlContent = '';
-        if (result.agent_response && result.agent_response.analysis) {
+        
+        if (this.currentMode === 'disease' && result.agent_response && result.agent_response.analysis) {
             htmlContent = this.createDiseaseAnalysisHTML(result.agent_response.analysis);
+        } else if (this.currentMode === 'schemes' && result.agent_response) {
+            htmlContent = this.createSchemesResponseHTML(result.agent_response);
         } else {
             htmlContent = this.createSimpleResponseHTML(result);
         }
@@ -257,12 +374,57 @@ class FarmerAssistant {
         `;
     }
     
+    createSchemesResponseHTML(agentResponse) {
+        return `
+            <div class="schemes-card">
+                <div class="schemes-header">
+                    <div class="schemes-title">Government Schemes Information</div>
+                    ${agentResponse.confidence ? `
+                        <div class="confidence-badge confidence-${agentResponse.confidence}">${agentResponse.confidence} relevance</div>
+                    ` : ''}
+                </div>
+                
+                <div class="schemes-content">
+                    ${agentResponse.message ? `
+                        <div class="schemes-section">
+                            <div class="schemes-text">${this.formatText(agentResponse.message)}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${agentResponse.schemes && agentResponse.schemes.length > 0 ? `
+                        <div class="schemes-section">
+                            <h4>📋 Relevant Schemes:</h4>
+                            ${agentResponse.schemes.map(scheme => `
+                                <div class="scheme-item">
+                                    <h5>${scheme.name}</h5>
+                                    <p><strong>Description:</strong> ${scheme.description}</p>
+                                    ${scheme.eligibility ? `<p><strong>Eligibility:</strong> ${scheme.eligibility}</p>` : ''}
+                                    ${scheme.benefits ? `<p><strong>Benefits:</strong> ${scheme.benefits}</p>` : ''}
+                                    ${scheme.application_process ? `<p><strong>How to Apply:</strong> ${scheme.application_process}</p>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    ${agentResponse.sources && agentResponse.sources.length > 0 ? `
+                        <div class="schemes-section">
+                            <h4>📚 Sources:</h4>
+                            <ul class="sources-list">
+                                ${agentResponse.sources.map(source => `<li>${source}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }
+    
     createSimpleResponseHTML(result) {
         return `
-            <div class="disease-card">
+            <div class="response-card">
                 <div class="analysis-section">
                     <h4>Response:</h4>
-                    <p>${result.final_response?.message || 'Analysis completed'}</p>
+                    <p>${result.final_response?.message || result.message || 'Request processed'}</p>
                 </div>
                 
                 ${result.classification ? `
@@ -275,6 +437,14 @@ class FarmerAssistant {
                 ` : ''}
             </div>
         `;
+    }
+    
+    formatText(text) {
+        // Simple text formatting - convert line breaks to <br> and bold **text**
+        return text
+            .replace(/\n/g, '<br>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>');
     }
     
     showError(message) {
@@ -290,12 +460,16 @@ class FarmerAssistant {
         document.getElementById('resultsSection').style.display = 'none';
         document.getElementById('errorSection').style.display = 'none';
         
-        // Reset form
-        document.getElementById('imageInput').value = '';
-        document.getElementById('textInput').value = '';
-        document.getElementById('analyzeBtn').disabled = true;
+        // Reset forms
+        if (this.currentMode === 'disease') {
+            document.getElementById('imageInput').value = '';
+            document.getElementById('textInput').value = '';
+            document.getElementById('analyzeBtn').disabled = true;
+            this.selectedImageData = null;
+        } else {
+            document.getElementById('schemeQueryInput').value = '';
+        }
         
-        this.selectedImageData = null;
         this.currentSessionId = null;
     }
     
@@ -317,7 +491,7 @@ class FarmerAssistant {
                 </button>
                 <div class="debug-content" style="display: none;">
                     <strong>Full Response:</strong>
-                    ${JSON.stringify(result, null, 2)}
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
                 </div>
             </div>
         `;

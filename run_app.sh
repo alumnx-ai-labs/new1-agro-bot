@@ -28,7 +28,7 @@ mkdir -p logs
 
 echo "🎯 Starting services..."
 echo "📡 Backend (Cloud Function simulation): http://localhost:8080"
-echo "🌐 Frontend (Web interface): http://localhost:5000"
+echo "🌐 Frontend (Web interface): http://localhost:5500"
 echo ""
 echo "Press Ctrl+C to stop all services"
 echo "=========================="
@@ -71,7 +71,7 @@ cd ..
 sleep 3
 
 # Check if frontend started successfully
-if curl -s http://localhost:5000/health > /dev/null 2>&1; then
+if curl -s http://localhost:5500/health > /dev/null 2>&1; then
     echo "✅ Frontend started successfully"
 else
     echo "⚠️  Frontend might be starting up..."
@@ -79,7 +79,7 @@ fi
 
 echo ""
 echo "🎉 Services are running!"
-echo "📱 Open your browser and go to: http://localhost:5000"
+echo "📱 Open your browser and go to: http://localhost:5500"
 echo "🔧 Backend API available at: http://localhost:8080"
 echo ""
 echo "📋 Logs:"

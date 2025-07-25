@@ -11,40 +11,78 @@
     <div class="container">
         <header>
             <h1>🌱 Farmer Assistant MVP</h1>
-            <p>Upload crop images for disease detection</p>
+            <p>Upload crop images for disease detection or query government schemes</p>
         </header>
 
         <main>
-            <!-- Input Section -->
-            <div class="input-section">
-                <div class="input-group">
-                    <label for="imageInput" class="btn btn-primary">
-                        📸 Upload Crop Image
-                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-                    </label>
+            <!-- Mode Selection -->
+            <div class="mode-selection">
+                <button id="diseaseMode" class="mode-btn active">
+                    🔬 Crop Disease Detection
+                </button>
+                <button id="schemesMode" class="mode-btn">
+                    🏛️ Government Schemes
+                </button>
+            </div>
+
+            <!-- Disease Detection Section -->
+            <div id="diseaseSection" class="mode-section active">
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="imageInput" class="btn btn-primary">
+                            📸 Upload Crop Image
+                            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        </label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <textarea id="textInput" placeholder="Describe any symptoms you notice (optional)..."></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <button id="analyzeBtn" class="btn btn-success" disabled>
+                            🔍 Analyze Crop
+                        </button>
+                    </div>
                 </div>
-                
-                <div class="input-group">
-                    <textarea id="textInput" placeholder="Describe any symptoms you notice (optional)..."></textarea>
-                </div>
-                
-                <div class="input-group">
-                    <button id="analyzeBtn" class="btn btn-success" disabled>
-                        🔍 Analyze Crop
-                    </button>
+            </div>
+
+            <!-- Government Schemes Section -->
+            <div id="schemesSection" class="mode-section">
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="schemeQuery">Ask about Government Schemes:</label>
+                        <textarea id="schemeQueryInput" placeholder="e.g., What are the subsidies available for organic farming? What schemes are there for small farmers? Tell me about PM-KISAN scheme..."></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <button id="querySchemeBtn" class="btn btn-success">
+                            🔍 Search Schemes
+                        </button>
+                    </div>
+                    
+                    <div class="scheme-examples">
+                        <p><strong>Example queries:</strong></p>
+                        <div class="example-chips">
+                            <span class="example-chip" data-query="What subsidies are available for drip irrigation?">Irrigation Subsidies</span>
+                            <span class="example-chip" data-query="Tell me about PM-KISAN scheme eligibility and benefits">PM-KISAN Scheme</span>
+                            <span class="example-chip" data-query="What are the loan schemes for dairy farming?">Dairy Farming Loans</span>
+                            <span class="example-chip" data-query="Organic farming certification and support schemes">Organic Farming Support</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Loading Section -->
             <div id="loadingSection" class="loading-section" style="display: none;">
                 <div class="spinner"></div>
-                <p>Analyzing your crop image...</p>
+                <p id="loadingText">Processing your request...</p>
                 <div id="managerThoughts" class="manager-thoughts"></div>
             </div>
 
             <!-- Results Section -->
             <div id="resultsSection" class="results-section" style="display: none;">
-                <h2>Analysis Results</h2>
+                <h2 id="resultsTitle">Analysis Results</h2>
                 <div id="analysisResults"></div>
             </div>
 
@@ -57,7 +95,7 @@
         </main>
 
         <footer>
-            <p>Phase 1 MVP - Disease Detection Agent</p>
+            <p>Phase 1 MVP - Disease Detection & Government Schemes Query</p>
         </footer>
     </div>
 
