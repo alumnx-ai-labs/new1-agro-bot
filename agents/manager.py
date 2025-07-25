@@ -9,6 +9,7 @@ from utils.firestore_client import FirestoreClient
 from agents.disease_detection import DiseaseDetectionAgent
 from agents.stt_agent import STTAgent
 from agents.rag_agent import RAGAgent
+from agents.translator_agent import TranslatorAgent
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -25,6 +26,7 @@ class ManagerAgent:
         # Initialize available agents
         self.disease_agent = DiseaseDetectionAgent()
         self.stt_agent = STTAgent()
+        self.translator_agent = TranslatorAgent()  # ADD THIS LINE
         
         # Initialize RAG agent with error handling
         try:
@@ -39,6 +41,7 @@ class ManagerAgent:
         self.agents = {
             'disease_detection': self.disease_agent,
             'speech_to_text': self.stt_agent,
+            'translator': self.translator_agent,  # ADD THIS LINE
         }
         
         if rag_available:
@@ -151,7 +154,7 @@ class ManagerAgent:
         return 'general_query'
     
     def process_request(self, session_id: str, input_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Main orchestration method"""
+        """Main orchestration method with translation flow"""
         
         try:
             # Add initial manager thought
@@ -160,100 +163,14 @@ class ManagerAgent:
                 "🤔 Analyzing your request..."
             )
             
-            # Classify the intent
-            classification = self.classify_intent(input_data)
+            # Step 1: Input Processing
+            processed_input, original_language = self.process_input_stage(session_id, input_data)
             
-            self.firestore_client.add_manager_thought(
-                session_id,
-                f"🎯 Identified intent: {classification['intent']} "
-                f"(confidence: {classification.get('confidence', 'unknown')})"
-            )
+            # Step 2: Logic Processing  
+            logic_result = self.process_logic_stage(session_id, processed_input)
             
-            # Route to appropriate agent
-            intent = classification['intent']
-            agent_response = None
-            
-            if intent == 'disease_detection':
-                self.firestore_client.add_manager_thought(
-                    session_id,
-                    "🔬 Calling disease detection specialist..."
-                )
-                
-                agent_response = self.disease_agent.analyze(
-                    input_data, 
-                    classification.get('entities', {})
-                )
-                
-            elif intent == 'government_schemes':
-                if self.rag_agent:
-                    self.firestore_client.add_manager_thought(
-                        session_id,
-                        "🏛️ Searching government schemes database..."
-                    )
-                    
-                    # Extract query text from input
-                    query_text = input_data.get('text', input_data.get('content', ''))
-                    
-                    agent_response = self.rag_agent.query(
-                        query_text,
-                        classification.get('entities', {})
-                    )
-                else:
-                    self.firestore_client.add_manager_thought(
-                        session_id,
-                        "⚠️ Government schemes functionality not available..."
-                    )
-                    
-                    agent_response = {
-                        'type': 'error',
-                        'message': 'Government schemes functionality is not available. Vector search is not configured. Please contact support.',
-                        'agent': 'manager_fallback'
-                    }
-                
-            elif intent == 'speech_to_text':
-                self.firestore_client.add_manager_thought(
-                    session_id,
-                    "🎤 Transcribing your audio..."
-                )
-                
-                # Extract audio data and language
-                audio_data = input_data.get('audio_data', '')
-                language = input_data.get('language', 'english')
-                
-                agent_response = self.stt_agent.transcribe_audio(audio_data, language)
-
-            else:  # general_query or fallback
-                self.firestore_client.add_manager_thought(
-                    session_id,
-                    "💬 Providing general assistance..."
-                )
-                
-                agent_response = {
-                    'type': 'general_response',
-                    'message': """Thank you for your question! I can help you with:
-                    
-                    🔬 **Crop Disease Detection** - Upload an image of your crop to identify diseases and get treatment advice
-                    🏛️ **Government Schemes** - Ask about subsidies, loans, and support schemes for farmers
-
-                    Please specify what you'd like help with!""",
-                    'agent': 'manager_fallback'
-                }
-            
-            # Save agent response
-            if agent_response:
-                self.firestore_client.save_agent_response(
-                    session_id, 
-                    intent, 
-                    agent_response
-                )
-            
-            self.firestore_client.add_manager_thought(
-                session_id,
-                "✅ Analysis complete! Preparing response..."
-            )
-            
-            # Create final response
-            final_response = self.synthesize_response(classification, agent_response)
+            # Step 3: Output Formation
+            final_response = self.process_output_stage(session_id, logic_result, original_language)
             
             # Update session status
             self.firestore_client.update_session_status(
@@ -266,18 +183,17 @@ class ManagerAgent:
 
             final_result = {
                 'session_id': session_id,
-                'classification': classification,
-                'agent_response': agent_response,
+                'original_language': original_language,
                 'final_response': final_response,
                 'status': 'success',
                 'debug_info': {
                     'model_used': 'gemini-2.5-flash',
                     'processing_time': 'calculated_in_production',
-                    'confidence': agent_response.get('confidence', 'unknown') if agent_response else 'unknown'
+                    'confidence': logic_result.get('confidence', 'unknown') if logic_result else 'unknown'
                 }
             }
 
-            # Log full response (can be disabled via environment variable)
+            # Log full response
             enable_logging = os.getenv('ENABLE_RESPONSE_LOGGING', 'true').lower() == 'true'
             self.log_full_response(session_id, final_result, enable_logging)
 
@@ -297,8 +213,196 @@ class ManagerAgent:
                 'session_id': session_id,
                 'error': str(e),
                 'status': 'error'
-            }
-    
+            }  
+
+    def process_input_stage(self, session_id: str, input_data: Dict[str, Any]) -> tuple:
+        """Stage 1: Input Processing"""
+        
+        original_language = input_data.get('language', 'english')
+        
+        # Handle image input
+        if input_data.get('image_data'):
+            self.firestore_client.add_manager_thought(
+                session_id,
+                "📸 Processing image for disease detection..."
+            )
+            return input_data, original_language
+        
+        # Handle audio input  
+        elif input_data.get('audio_data'):
+            self.firestore_client.add_manager_thought(
+                session_id,
+                "🎤 Transcribing audio..."
+            )
+            
+            # Transcribe audio
+            stt_result = self.stt_agent.transcribe_audio(
+                input_data['audio_data'], 
+                original_language
+            )
+            
+            if stt_result.get('success'):
+                transcript = stt_result['transcript']
+                
+                # Translate to English if needed
+                if original_language.lower() not in ['english', 'en']:
+                    self.firestore_client.add_manager_thought(
+                        session_id,
+                        "🌐 Translating to English for processing..."
+                    )
+                    
+                    translation_result = self.translator_agent.translate(
+                        original_language, 'english', transcript
+                    )
+                    
+                    if translation_result.get('success'):
+                        english_text = translation_result['translated_text']
+                    else:
+                        english_text = transcript  # Fallback to original
+                else:
+                    english_text = transcript
+                
+                # Return processed text input
+                return {
+                    'type': 'text',
+                    'text': english_text,
+                    'content': english_text,
+                    'original_transcript': transcript,
+                    'language': 'english'
+                }, original_language
+            else:
+                raise Exception(f"Audio transcription failed: {stt_result.get('error')}")
+        
+        # Handle text input
+        else:
+            text_content = input_data.get('text', input_data.get('content', ''))
+            
+            # Translate to English if needed
+            if original_language.lower() not in ['english', 'en']:
+                self.firestore_client.add_manager_thought(
+                    session_id,
+                    "🌐 Translating to English for processing..."
+                )
+                
+                translation_result = self.translator_agent.translate(
+                    original_language, 'english', text_content
+                )
+                
+                if translation_result.get('success'):
+                    english_text = translation_result['translated_text']
+                else:
+                    english_text = text_content  # Fallback to original
+            else:
+                english_text = text_content
+            
+            return {
+                'type': 'text',
+                'text': english_text,
+                'content': english_text,
+                'original_text': text_content,
+                'language': 'english',
+                'queryType': input_data.get('queryType')
+            }, original_language
+
+    def process_logic_stage(self, session_id: str, processed_input: Dict[str, Any]) -> Dict[str, Any]:
+        """Stage 2: Logic Processing"""
+        
+        # Handle image (disease detection)
+        if processed_input.get('image_data'):
+            self.firestore_client.add_manager_thought(
+                session_id,
+                "🔬 Analyzing crop disease..."
+            )
+            
+            return self.disease_agent.analyze(processed_input, {})
+        
+        # Handle text queries
+        else:
+            text_content = processed_input.get('text', '')
+            
+            # Check if it's about government schemes
+            if self.is_government_schemes_query(text_content, processed_input.get('queryType')):
+                if self.rag_agent:
+                    self.firestore_client.add_manager_thought(
+                        session_id,
+                        "🏛️ Searching government schemes..."
+                    )
+                    
+                    return self.rag_agent.query(text_content, {})
+                else:
+                    return {
+                        'type': 'error',
+                        'message': 'Government schemes functionality is not available.',
+                        'agent': 'manager_fallback'
+                    }
+            else:
+                # General farming query
+                self.firestore_client.add_manager_thought(
+                    session_id,
+                    "💬 Providing general farming assistance..."
+                )
+                
+                return {
+                    'type': 'general_response',
+                    'message': f"""I can help you with your farming question: "{text_content}"
+
+    🔬 **Crop Disease Detection** - Upload an image of your crop to identify diseases
+    🏛️ **Government Schemes** - Ask about subsidies, loans, and support schemes  
+    🌾 **General Farming** - Ask any farming-related questions
+
+    How would you like me to help you specifically?""",
+                    'agent': 'general_assistant'
+                }
+
+    def process_output_stage(self, session_id: str, logic_result: Dict[str, Any], original_language: str) -> Dict[str, Any]:
+        """Stage 3: Output Formation"""
+        
+        # Create response in English first
+        english_response = self.synthesize_response({}, logic_result)
+        
+        # Translate back to original language if needed
+        if original_language.lower() not in ['english', 'en']:
+            self.firestore_client.add_manager_thought(
+                session_id,
+                f"🌐 Translating response to {original_language}..."
+            )
+            
+            translation_result = self.translator_agent.translate(
+                'english', original_language, english_response['message']
+            )
+            
+            if translation_result.get('success'):
+                # Create translated response
+                translated_response = english_response.copy()
+                translated_response['message'] = translation_result['translated_text']
+                translated_response['original_english'] = english_response['message']
+                translated_response['language'] = original_language
+                return translated_response
+            else:
+                # Fallback to English if translation fails
+                english_response['translation_note'] = 'Translation failed, showing in English'
+                return english_response
+        
+        return english_response
+
+    def is_government_schemes_query(self, text: str, query_type: str = None) -> bool:
+        """Determine if query is about government schemes"""
+        
+        # Check explicit query type
+        if query_type == 'government_schemes':
+            return True
+        
+        # Check for scheme-related keywords
+        text_lower = text.lower()
+        scheme_keywords = [
+            'scheme', 'subsidy', 'loan', 'pm-kisan', 'government', 'policy', 
+            'support', 'benefit', 'pradhan mantri', 'yojana', 'grant', 
+            'financial assistance', 'central government', 'state government'
+        ]
+        
+        return any(keyword in text_lower for keyword in scheme_keywords)
+
+
     def synthesize_response(self, classification: Dict, agent_response: Dict) -> Dict[str, Any]:
         """Create a unified response from agent outputs"""
         
@@ -308,8 +412,10 @@ class ManagerAgent:
                 'type': 'error'
             }
         
+        agent_type = agent_response.get('agent', agent_response.get('type', 'unknown'))
+        
         # For disease detection responses
-        if classification['intent'] == 'disease_detection' and agent_response.get('analysis'):
+        if 'disease' in agent_type and agent_response.get('analysis'):
             analysis = agent_response['analysis']
             
             # Create farmer-friendly summary
@@ -337,7 +443,7 @@ class ManagerAgent:
             }
         
         # For government schemes responses
-        elif classification['intent'] == 'government_schemes':
+        elif 'rag' in agent_type or agent_response.get('schemes'):
             message = agent_response.get('message', 'Government schemes information retrieved.')
             
             # Add scheme summary if available
@@ -353,27 +459,12 @@ class ManagerAgent:
                 'confidence': agent_response.get('confidence', 'medium')
             }
         
-        elif classification['intent'] == 'speech_to_text':
-            if agent_response.get('success'):
-                message = f"🎤 **Transcription**: {agent_response['transcript']}"
-                if agent_response.get('confidence'):
-                    message += f"\n📊 **Confidence**: {agent_response['confidence']:.2f}"
-            else:
-                message = f"❌ **Transcription failed**: {agent_response.get('error', 'Unknown error')}"
-            
-            return {
-                'message': message,
-                'type': 'speech_to_text',
-                'transcript': agent_response.get('transcript', ''),
-                'confidence': agent_response.get('confidence', 0),
-                'success': agent_response.get('success', False)
-            }
-
         # For general responses
         return {
             'message': agent_response.get('message', 'Request processed.'),
             'type': agent_response.get('type', 'general'),
         }
+    
     
     def log_full_response(self, session_id: str, response_data: Dict[str, Any], enable_logging: bool = True):
         """Log complete response for debugging"""
