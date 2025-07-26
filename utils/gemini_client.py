@@ -44,7 +44,7 @@ class GeminiClient:
                 prompt,
                 safety_settings=self.safety_config,
                 generation_config={
-                    "max_output_tokens": 1024,
+                    "max_output_tokens": 4096,
                     "temperature": 0.2,
                     "top_p": 0.8,
                 }
