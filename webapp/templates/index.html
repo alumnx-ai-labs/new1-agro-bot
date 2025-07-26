@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Assistant MVP</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Maps API -->
+    <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGEZNLweBIvWOzArRUf6c47cbOea8iCjo&callback=initMap&libraries=geometry">
+    </script>
 </head>
 
 <body>
@@ -30,6 +34,9 @@
                 </button>
                 <button id="talkMode" class="mode-btn">
                     🎤 Talk Now
+                </button>
+                <button id="weatherMode" class="mode-btn">
+                    🌤️ Weather Stations
                 </button>
             </div>
 
@@ -127,6 +134,56 @@
                 </div>
             </div>
 
+            <!-- Weather Stations Section -->
+            <div id="weatherSection" class="mode-section">
+                <div class="weather-controls">
+                    <div class="input-group">
+                        <label>Weather Station Controls:</label>
+                        <div class="map-controls">
+                            <button id="refreshStationsBtn" class="btn btn-primary">
+                                🔄 Refresh Stations
+                            </button>
+                            <button id="findNearestBtn" class="btn btn-success">
+                                📍 Find Nearest Station
+                            </button>
+                            <button id="showAllBtn" class="btn btn-secondary">
+                                🗺️ Show All Stations
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="stationFilter">Filter by Type:</label>
+                        <select id="stationFilter" class="station-filter">
+                            <option value="all">All Stations</option>
+                            <option value="Primary">Primary Stations</option>
+                            <option value="Agricultural">Agricultural Stations</option>
+                            <option value="Research">Research Centers</option>
+                            <option value="Rural">Rural Stations</option>
+                            <option value="Village">Village Stations</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <div id="map" class="google-map"></div>
+                </div>
+
+                <div class="station-info">
+                    <div id="selectedStationInfo" class="station-details" style="display: none;">
+                        <h4>Station Information</h4>
+                        <div id="stationInfoContent"></div>
+                    </div>
+                    
+                    <div id="stationsList" class="stations-list">
+                        <h4>Weather Stations Near You</h4>
+                        <div id="stationsListContent">
+                            <p>Loading weather stations...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Loading Section -->
             <div id="loadingSection" class="loading-section" style="display: none;">
                 <div class="spinner"></div>
@@ -149,7 +206,7 @@
         </main>
 
         <footer>
-            <p>Phase 1 MVP - Disease Detection & Government Schemes Query</p>
+            <p>Phase 1 MVP - Disease Detection, Government Schemes & Weather Monitoring</p>
         </footer>
     </div>
 
@@ -221,6 +278,19 @@
                     <button type="button" id="cancelSettings" class="btn btn-secondary">Cancel</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Weather Station Info Modal -->
+    <div id="stationModal" class="station-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalStationName">Weather Station Details</h3>
+                <button id="closeModal" class="close-btn">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalStationContent"></div>
+            </div>
         </div>
     </div>
 </body>

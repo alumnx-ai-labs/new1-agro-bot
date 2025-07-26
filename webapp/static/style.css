@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -45,6 +45,7 @@ header p {
     gap: 15px;
     margin-bottom: 30px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .mode-btn {
@@ -151,6 +152,251 @@ header p {
     font-weight: 600;
     color: #4a7c59;
     font-size: 1.1rem;
+}
+
+/* Weather Station Styles */
+.weather-controls {
+    margin-bottom: 25px;
+}
+
+.map-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.station-filter {
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    transition: border-color 0.3s ease;
+    max-width: 200px;
+}
+
+.station-filter:focus {
+    outline: none;
+    border-color: #4a7c59;
+}
+
+.map-container {
+    margin: 25px 0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.google-map {
+    width: 100%;
+    height: 500px;
+    border: none;
+}
+
+.station-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.station-details {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #4a7c59;
+}
+
+.station-details h4 {
+    color: #4a7c59;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.stations-list {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.stations-list h4 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.station-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.station-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #4a7c59;
+}
+
+.station-item h5 {
+    color: #4a7c59;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.station-item p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+}
+
+.station-distance {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.station-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.station-type {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #e3f2fd;
+    color: #1976d2;
+    margin-left: 5px;
+}
+
+/* Custom Map Info Window Styles */
+.custom-info-window {
+    max-width: 300px;
+    padding: 15px;
+}
+
+.info-station-name {
+    color: #4a7c59;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.info-station-details {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.info-station-details p {
+    margin-bottom: 5px;
+}
+
+.info-station-contact {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Station Modal Styles */
+.station-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header h3 {
+    color: #4a7c59;
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-station-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-station-detail:last-child {
+    border-bottom: none;
+}
+
+.modal-station-detail strong {
+    color: #4a7c59;
+    min-width: 120px;
+}
+
+.modal-parameters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.parameter-chip {
+    background: #e8f5e8;
+    color: #2e7d32;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
 }
 
 /* Buttons */
@@ -548,6 +794,25 @@ footer {
     .example-chip {
         text-align: center;
     }
+    
+    .station-info {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .map-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .google-map {
+        height: 400px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -586,6 +851,10 @@ footer {
     
     .treatment-card, .scheme-item {
         padding: 12px;
+    }
+    
+    .google-map {
+        height: 300px;
     }
 }
 
@@ -727,8 +996,6 @@ footer {
     }
 }
 
-
-
 /* Transcription Styles */
 .transcription-card {
     border: 1px solid #e0e0e0;
@@ -800,6 +1067,7 @@ footer {
     background: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
+
 /* Settings Styles */
 .header-content {
     position: relative;
