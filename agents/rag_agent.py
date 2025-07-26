@@ -30,7 +30,7 @@ class RAGAgent:
             self.vector_search_available = False
             logger.info("RAGAgent initialized in fallback mode (no vector search)")
     
-    def query(self, user_query: str, entities: Dict[str, Any]) -> Dict[str, Any]:
+    def query(self, user_query: str, entities: Dict[str, Any], farm_settings: Dict[str, Any] = None) -> Dict[str, Any]:
         """Process government schemes query using RAG approach or fallback"""
         
         try:
@@ -65,7 +65,7 @@ class RAGAgent:
         context = self.create_context_from_chunks(relevant_chunks)
         
         # Step 4: Generate response using Gemini with retrieved context
-        response = self.generate_rag_response(user_query, context, entities)
+        response = self.generate_rag_response(user_query, context, entities, entities.get('farm_settings'))
         
         return {
             'type': 'rag_response',
@@ -113,14 +113,27 @@ class RAGAgent:
         
         return "\n---\n".join(context_parts)
     
-    def generate_rag_response(self, query: str, context: str, entities: Dict) -> Dict[str, Any]:
+    def generate_rag_response(self, query: str, context: str, entities: Dict, farm_settings: Dict = None) -> Dict[str, Any]:
         """Generate response using Gemini with retrieved context"""
         
+        # Add farm context if available
+        farm_context = ""
+        if farm_settings:
+            farm_context = f"""
+        FARMER'S PROFILE:
+        - Name: {farm_settings.get('farmerName', 'Not provided')}
+        - Crop: {farm_settings.get('cropType', 'Not specified')}
+        - Farm Size: {farm_settings.get('acreage', 'Not specified')} acres
+        - Current Stage: {farm_settings.get('currentStage', 'Not specified')}
+        - Soil Type: {farm_settings.get('soilType', 'Not specified')}
+        - Current Challenges: {farm_settings.get('currentChallenges', 'None mentioned')}
+        """
         prompt = f"""
         You are a helpful assistant specializing in Indian government schemes and agricultural policies.
-        
+
+        {farm_context}
         USER QUERY: {query}
-        
+
         RETRIEVED CONTEXT:
         {context}
         

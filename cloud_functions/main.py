@@ -59,11 +59,12 @@ def farmer_assistant(request: Request):
         language = request_data.get('language', 'en')
         query_type = request_data.get('queryType')  # New field for scheme queries
         text_description = request_data.get('textDescription', '')  # For disease detection context
-        
+        farm_settings = request_data.get('farmSettings', {})  # Farm personalization context
+
         logger.info(f"Processing request: type={input_type}, user={user_id}, queryType={query_type}")
-        
+
         # Process different input types
-        processed_input = process_input(input_type, content, language, query_type, text_description)
+        processed_input = process_input(input_type, content, language, query_type, text_description, farm_settings)
         
         # Create session
         session_id = firestore_client.create_session(user_id, processed_input)
@@ -85,7 +86,7 @@ def farmer_assistant(request: Request):
         
         return json.dumps(error_response), 500, headers
 
-def process_input(input_type: str, content: str, language: str, query_type: str = None, text_description: str = '') -> dict:
+def process_input(input_type: str, content: str, language: str, query_type: str = None, text_description: str = '', farm_settings: dict = None) -> dict:
     """Process different types of input"""
     
     if input_type == 'image':
@@ -95,7 +96,8 @@ def process_input(input_type: str, content: str, language: str, query_type: str 
             'image_data': content,
             'language': language,
             'text': text_description,  # Additional context for disease detection
-            'input_type': input_type
+            'input_type': input_type,
+            'farm_settings': farm_settings
         }
     
     elif input_type == 'audio':
@@ -104,7 +106,8 @@ def process_input(input_type: str, content: str, language: str, query_type: str 
             'type': 'audio',
             'audio_data': content,
             'language': language,
-            'input_type': input_type
+            'input_type': input_type,
+            'farm_settings': farm_settings
         }
     
     elif input_type == 'text':
@@ -114,7 +117,8 @@ def process_input(input_type: str, content: str, language: str, query_type: str 
             'text': content,
             'content': content,  # Alias for compatibility
             'language': language,
-            'input_type': input_type
+            'input_type': input_type,
+            'farm_settings': farm_settings
         }
         
         # Add query type if specified (helps with routing)

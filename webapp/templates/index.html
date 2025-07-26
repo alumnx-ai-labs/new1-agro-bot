@@ -12,9 +12,12 @@
 <body>
     <div class="container">
         <header>
-            <h1>🌱 Farmer Assistant MVP</h1>
-            <p>Upload crop images for disease detection or query government schemes</p>
-        </header>
+    <div class="header-content">
+        <h1>🌱 Farmer Assistant MVP</h1>
+        <p>Upload crop images for disease detection or query government schemes</p>
+        <button id="settingsBtn" class="settings-btn">⚙️ Settings</button>
+    </div>
+</header>
 
         <main>
             <!-- Mode Selection -->
@@ -151,6 +154,75 @@
     </div>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+    <!-- Settings Popup -->
+    <div id="settingsPopup" class="settings-popup" style="display: none;">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>🚜 Farm Settings</h3>
+                <button id="closeSettings" class="close-btn">✕</button>
+            </div>
+            <form id="settingsForm" class="settings-form">
+                <div class="form-row">
+                    <label for="cropType">Crop Type:</label>
+                    <input type="text" id="cropType" value="Mosambi">
+                </div>
+                <div class="form-row">
+                    <label for="acreage">Acreage:</label>
+                    <input type="number" id="acreage" step="0.1" value="15">
+                </div>
+                <div class="form-row">
+                    <label for="sowingDate">Sowing Date:</label>
+                    <input type="date" id="sowingDate" value="2022-01-01">
+                </div>
+                <div class="form-row">
+                    <label for="currentStage">Current Stage:</label>
+                    <select id="currentStage">
+                        <option value="New Flush/Sprouting">New Flush/Sprouting</option>
+                        <option value="Flowering">Flowering</option>
+                        <option value="Fruit Set">Fruit Set</option>
+                        <option value="Fruit Development" selected>Fruit Development</option>
+                        <option value="Maturity/Harvest">Maturity/Harvest</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="farmerName">Farmer Name:</label>
+                    <input type="text" id="farmerName" value="Vijender">
+                </div>
+                <div class="form-row">
+                    <label for="soilType">Soil Type:</label>
+                    <select id="soilType">
+                        <option value="A" selected>A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="currentChallenges">Current Challenges:</label>
+                    <textarea id="currentChallenges">Currently there are no challenges.</textarea>
+                </div>
+                <div class="form-row">
+                    <label for="preferredLanguages">Preferred Languages:</label>
+                    <div class="language-checkboxes">
+                        <label><input type="checkbox" value="English" checked> English</label>
+                        <label><input type="checkbox" value="Hindi"> Hindi</label>
+                        <label><input type="checkbox" value="Bengali"> Bengali</label>
+                        <label><input type="checkbox" value="Tamil"> Tamil</label>
+                        <label><input type="checkbox" value="Telugu" checked> Telugu</label>
+                        <label><input type="checkbox" value="Marathi"> Marathi</label>
+                        <label><input type="checkbox" value="Gujarati"> Gujarati</label>
+                        <label><input type="checkbox" value="Kannada"> Kannada</label>
+                        <label><input type="checkbox" value="Malayalam"> Malayalam</label>
+                        <label><input type="checkbox" value="Punjabi"> Punjabi</label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="saveSettings" class="btn btn-primary">💾 Save Settings</button>
+                    <button type="button" id="cancelSettings" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>
