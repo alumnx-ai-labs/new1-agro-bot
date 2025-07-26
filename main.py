@@ -15,7 +15,7 @@ manager_agent = ManagerAgent()
 firestore_client = FirestoreClient()
 
 @functions_framework.http
-def farmer_assistant(request: Request):
+def new2_farmer_assistant(request: Request):
     """
     Main Cloud Function entry point for the Farmer Assistant MVP
     """

@@ -189,6 +189,7 @@ class ManagerAgent:
                 'original_language': original_language,
                 'final_response': final_response,
                 'status': 'success',
+                'static_infp':'Some text to be given',
                 'debug_info': {
                     'model_used': 'gemini-2.5-flash',
                     'processing_time': 'calculated_in_production',
