@@ -10,6 +10,7 @@ class FarmerAssistant {
         this.recordedAudioData = null;
 
         this.initializeEventListeners();
+        this.loadFarmSettings();
         this.checkHealth();
     }
 
@@ -72,6 +73,30 @@ class FarmerAssistant {
         // Retry button
         document.getElementById('retryBtn').addEventListener('click', () => {
             this.resetInterface();
+        });
+
+        // Settings listeners
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            this.openSettings();
+        });
+
+        document.getElementById('closeSettings').addEventListener('click', () => {
+            this.closeSettings();
+        });
+
+        document.getElementById('cancelSettings').addEventListener('click', () => {
+            this.closeSettings();
+        });
+
+        document.getElementById('saveSettings').addEventListener('click', () => {
+            this.saveFarmSettings();
+        });
+
+        // Close popup when clicking outside
+        document.getElementById('settingsPopup').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('settingsPopup')) {
+                this.closeSettings();
+            }
         });
     }
 
@@ -166,7 +191,8 @@ class FarmerAssistant {
                 content: this.selectedImageData,
                 userId: this.getUserId(),
                 language: 'en',
-                textDescription: textDescription
+                textDescription: textDescription,
+                farmSettings: this.getFarmSettings()
             };
 
             console.log('📤 Sending analysis request...');
@@ -212,7 +238,8 @@ class FarmerAssistant {
                 content: queryText,
                 userId: this.getUserId(),
                 language: 'en',
-                queryType: 'government_schemes'
+                queryType: 'government_schemes',
+                farmSettings: this.getFarmSettings()
             };
 
             console.log('📤 Sending schemes query request...');
@@ -345,7 +372,8 @@ if (MediaRecorder.isTypeSupported(options.mimeType)) {
                 inputType: 'audio',
                 content: this.recordedAudioData,
                 userId: this.getUserId(),
-                language: selectedLanguage
+                language: selectedLanguage,
+                farmSettings: this.getFarmSettings()
             };
 
             console.log('📤 Sending transcription request...');
@@ -680,6 +708,88 @@ if (MediaRecorder.isTypeSupported(options.mimeType)) {
         }
 
         this.currentSessionId = null;
+    }
+
+    loadFarmSettings() {
+        const savedSettings = localStorage.getItem('farmSettings');
+        if (savedSettings) {
+            const settings = JSON.parse(savedSettings);
+            
+            document.getElementById('cropType').value = settings.cropType || 'Mosambi';
+            document.getElementById('acreage').value = settings.acreage || 15;
+            document.getElementById('sowingDate').value = settings.sowingDate || '2022-01-01';
+            document.getElementById('currentStage').value = settings.currentStage || 'Fruit Development';
+            document.getElementById('farmerName').value = settings.farmerName || 'Vijender';
+            document.getElementById('soilType').value = settings.soilType || 'A';
+            document.getElementById('currentChallenges').value = settings.currentChallenges || 'Currently there are no challenges.';
+            
+            // Load preferred languages
+            const checkboxes = document.querySelectorAll('.language-checkboxes input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = settings.preferredLanguages && settings.preferredLanguages.includes(checkbox.value);
+            });
+        }
+    }
+
+    openSettings() {
+        document.getElementById('settingsPopup').style.display = 'flex';
+    }
+
+    closeSettings() {
+        document.getElementById('settingsPopup').style.display = 'none';
+    }
+
+    saveFarmSettings() {
+        const preferredLanguages = [];
+        document.querySelectorAll('.language-checkboxes input[type="checkbox"]:checked').forEach(checkbox => {
+            preferredLanguages.push(checkbox.value);
+        });
+
+        const settings = {
+            cropType: document.getElementById('cropType').value,
+            acreage: parseFloat(document.getElementById('acreage').value),
+            sowingDate: document.getElementById('sowingDate').value,
+            currentStage: document.getElementById('currentStage').value,
+            farmerName: document.getElementById('farmerName').value,
+            soilType: document.getElementById('soilType').value,
+            currentChallenges: document.getElementById('currentChallenges').value,
+            preferredLanguages: preferredLanguages
+        };
+
+        localStorage.setItem('farmSettings', JSON.stringify(settings));
+        
+        // Show success message
+        const saveBtn = document.getElementById('saveSettings');
+        const originalText = saveBtn.textContent;
+        saveBtn.textContent = '✅ Saved!';
+        saveBtn.style.background = '#28a745';
+        
+        setTimeout(() => {
+            saveBtn.textContent = originalText;
+            saveBtn.style.background = '';
+            this.closeSettings();
+        }, 1500);
+
+        console.log('✅ Farm settings saved:', settings);
+    }
+
+    getFarmSettings() {
+        const savedSettings = localStorage.getItem('farmSettings');
+        if (savedSettings) {
+            return JSON.parse(savedSettings);
+        }
+        
+        // Return defaults if no settings saved
+        return {
+            cropType: 'Mosambi',
+            acreage: 15,
+            sowingDate: '2022-01-01',
+            currentStage: 'Fruit Development',
+            farmerName: 'Vijender',
+            soilType: 'A',
+            currentChallenges: 'Currently there are no challenges.',
+            preferredLanguages: ['English', 'Telugu']
+        };
     }
 
     getUserId() {
