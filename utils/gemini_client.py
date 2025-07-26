@@ -44,7 +44,7 @@ class GeminiClient:
                 prompt,
                 safety_settings=self.safety_config,
                 generation_config={
-                    "max_output_tokens": 4096,
+                    "max_output_tokens": 16384,
                     "temperature": 0.2,
                     "top_p": 0.8,
                 }
@@ -91,7 +91,7 @@ class GeminiClient:
                 [prompt, image_part],
                 safety_settings=self.safety_config,
                 generation_config={
-                    "max_output_tokens": 4096,  # Increased limit
+                    "max_output_tokens": 16384,  # Increased limit
                     "temperature": 0.1,
                     "top_p": 0.8,
                 }
@@ -136,7 +136,7 @@ class GeminiClient:
                         [prompt, audio_part],
                         safety_settings=self.safety_config,
                         generation_config={
-                            "max_output_tokens": 4096,
+                            "max_output_tokens": 16384,
                             "temperature": 0.1,  # Lower for more accurate transcription
                             "top_p": 0.8,
                         }
