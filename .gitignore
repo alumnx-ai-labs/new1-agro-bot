@@ -7,10 +7,8 @@ cat > .gitignore << 'EOF'
 .env.development.local
 .env.test.local
 .env.production.local
-
 # Google Cloud credentials
 service-account-key.json
-*.json
 
 # Python
 __pycache__/
@@ -35,3 +33,7 @@ EOF
 
 google-cloud-sdk
 google-cloud-sdk-471.0.0-darwin-arm.tar.gz
+
+disease_analysis_agent.py
+d_d.py
+manager(Copy).py
