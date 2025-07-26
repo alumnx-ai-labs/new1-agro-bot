@@ -10,6 +10,7 @@ from agents.disease_detection import DiseaseDetectionAgent
 from agents.stt_agent import STTAgent
 from agents.rag_agent import RAGAgent
 from agents.translator_agent import TranslatorAgent
+from agents.general_agent import GeneralAgent
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -26,8 +27,9 @@ class ManagerAgent:
         # Initialize available agents
         self.disease_agent = DiseaseDetectionAgent()
         self.stt_agent = STTAgent()
-        self.translator_agent = TranslatorAgent()  # ADD THIS LINE
-        
+        self.translator_agent = TranslatorAgent()
+        self.general_agent = GeneralAgent()  # ADD THIS LINE
+
         # Initialize RAG agent with error handling
         try:
             self.rag_agent = RAGAgent()
@@ -36,12 +38,13 @@ class ManagerAgent:
             logger.warning(f"RAG agent initialization failed: {e}")
             self.rag_agent = None
             rag_available = False
-        
+
         # Agent registry for easy expansion
         self.agents = {
             'disease_detection': self.disease_agent,
             'speech_to_text': self.stt_agent,
-            'translator': self.translator_agent,  # ADD THIS LINE
+            'translator': self.translator_agent,
+            'general_farming': self.general_agent,  # ADD THIS LINE
         }
         
         if rag_available:
@@ -314,7 +317,8 @@ class ManagerAgent:
                 "🔬 Analyzing crop disease..."
             )
             
-            return self.disease_agent.analyze(processed_input, {})
+            farm_settings = processed_input.get('farm_settings', {})
+            return self.disease_agent.analyze(processed_input, {}, farm_settings)
         
         # Handle text queries
         else:
@@ -328,7 +332,8 @@ class ManagerAgent:
                         "🏛️ Searching government schemes..."
                     )
                     
-                    return self.rag_agent.query(text_content, {})
+                    farm_settings = processed_input.get('farm_settings', {})
+                    return self.rag_agent.query(text_content, {'farm_settings': farm_settings}, farm_settings)
                 else:
                     return {
                         'type': 'error',
@@ -339,20 +344,13 @@ class ManagerAgent:
                 # General farming query
                 self.firestore_client.add_manager_thought(
                     session_id,
-                    "💬 Providing general farming assistance..."
+                    "💬 Providing personalized farming assistance..."
                 )
                 
-                return {
-                    'type': 'general_response',
-                    'message': f"""I can help you with your farming question: "{text_content}"
-
-    🔬 **Crop Disease Detection** - Upload an image of your crop to identify diseases
-    🏛️ **Government Schemes** - Ask about subsidies, loans, and support schemes  
-    🌾 **General Farming** - Ask any farming-related questions
-
-    How would you like me to help you specifically?""",
-                    'agent': 'general_assistant'
-                }
+                # Extract farm settings for personalization
+                farm_settings = processed_input.get('farm_settings', {})
+                
+                return self.general_agent.query(text_content, farm_settings)
 
     def process_output_stage(self, session_id: str, logic_result: Dict[str, Any], original_language: str) -> Dict[str, Any]:
         """Stage 3: Output Formation"""

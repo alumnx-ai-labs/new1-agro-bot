@@ -16,7 +16,7 @@ class DiseaseDetectionAgent:
         self.gemini_client = GeminiClient()
         logger.info("DiseaseDetectionAgent initialized")
     
-    def analyze(self, input_data: Dict[str, Any], entities: Dict[str, Any]) -> Dict[str, Any]:
+    def analyze(self, input_data: Dict[str, Any], entities: Dict[str, Any], farm_settings: Dict[str, Any] = None) -> Dict[str, Any]:
         """Analyze crop disease from image and/or text description"""
         
         # Check if we have an image to analyze
@@ -29,7 +29,7 @@ class DiseaseDetectionAgent:
         
         try:
             # Create comprehensive analysis prompt
-            analysis_prompt = self.create_analysis_prompt(input_data, entities)
+            analysis_prompt = self.create_analysis_prompt(input_data, entities, farm_settings)
             
             # Analyze image using Gemini Pro Vision with retry logic
             max_retries = 2
@@ -89,19 +89,34 @@ class DiseaseDetectionAgent:
                 'agent': 'disease_detection'
             }
     
-    def create_analysis_prompt(self, input_data: Dict[str, Any], entities: Dict[str, Any]) -> str:
+    def create_analysis_prompt(self, input_data: Dict[str, Any], entities: Dict[str, Any], farm_settings: Dict[str, Any] = None) -> str:
         """Create a comprehensive prompt for disease analysis"""
         
         # Get additional context
         text_description = input_data.get('text', input_data.get('translated_text', ''))
         location = entities.get('location', 'India')
-        crop_type = entities.get('crop_mentioned', 'crop')
-        
+        crop_type = entities.get('crop_mentioned', farm_settings.get('cropType', 'crop') if farm_settings else 'crop')
+
+        # Build farm context
+        farm_context = ""
+        if farm_settings:
+            farm_context = f"""
+        FARMER'S CONTEXT:
+        - Farmer: {farm_settings.get('farmerName', 'Not provided')}
+        - Crop: {farm_settings.get('cropType', 'Not specified')}
+        - Current Stage: {farm_settings.get('currentStage', 'Not specified')}
+        - Farm Size: {farm_settings.get('acreage', 'Not specified')} acres
+        - Soil Type: {farm_settings.get('soilType', 'Not specified')}
+        - Current Challenges: {farm_settings.get('currentChallenges', 'None mentioned')}
+        """
+
         prompt = f"""
         You are Dr. AgriExpert, a leading plant pathologist specializing in Indian agriculture.
-        
+
         TASK: Analyze this {crop_type} image for diseases, pests, or health issues.
-        
+
+        {farm_context}
+
         CONTEXT:
         - Location: {location}
         - Additional description: {text_description}
