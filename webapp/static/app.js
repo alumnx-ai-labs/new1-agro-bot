@@ -4,14 +4,20 @@ class FarmerAssistant {
         this.selectedImageData = null;
         this.currentSessionId = null;
         this.managerThoughtsInterval = null;
-        this.currentMode = 'disease'; // 'disease' or 'schemes'
+        this.currentMode = 'disease'; // 'disease', 'schemes', 'talk', or 'weather'
         this.mediaRecorder = null;
         this.audioChunks = [];
         this.recordedAudioData = null;
+        
+        // Weather stations and map properties
+        this.weatherStations = null;
+        this.map = null;
+        this.markers = [];
 
         this.initializeEventListeners();
         this.loadFarmSettings();
         this.checkHealth();
+        this.loadWeatherStations();
     }
 
     initializeEventListeners() {
@@ -26,6 +32,10 @@ class FarmerAssistant {
 
         document.getElementById('talkMode').addEventListener('click', () => {
             this.switchMode('talk');
+        });
+
+        document.getElementById('weatherMode').addEventListener('click', () => {
+            this.switchMode('weather');
         });
 
         // Disease detection listeners
@@ -70,6 +80,15 @@ class FarmerAssistant {
             this.transcribeAudio();
         });
 
+        // Weather station listeners (simplified)
+        document.getElementById('refreshStationsBtn').addEventListener('click', () => {
+            this.loadWeatherStations();
+        });
+
+        document.getElementById('showAllBtn').addEventListener('click', () => {
+            this.showAllStations();
+        });
+
         // Retry button
         document.getElementById('retryBtn').addEventListener('click', () => {
             this.resetInterface();
@@ -92,10 +111,21 @@ class FarmerAssistant {
             this.saveFarmSettings();
         });
 
-        // Close popup when clicking outside
+        // Modal listeners
+        document.getElementById('closeModal').addEventListener('click', () => {
+            this.closeStationModal();
+        });
+
+        // Close popups when clicking outside
         document.getElementById('settingsPopup').addEventListener('click', (e) => {
             if (e.target === document.getElementById('settingsPopup')) {
                 this.closeSettings();
+            }
+        });
+
+        document.getElementById('stationModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('stationModal')) {
+                this.closeStationModal();
             }
         });
     }
@@ -117,7 +147,103 @@ class FarmerAssistant {
         } else if (mode === 'talk') {
             document.getElementById('talkMode').classList.add('active');
             document.getElementById('talkSection').classList.add('active');
+        } else if (mode === 'weather') {
+            document.getElementById('weatherMode').classList.add('active');
+            document.getElementById('weatherSection').classList.add('active');
+            // Initialize map when weather mode is selected
+            setTimeout(() => this.initializeMap(), 100);
         }
+    }
+
+    // Weather Stations Methods (Simplified)
+    async loadWeatherStations() {
+        try {
+            const response = await fetch('/static/weather_stations.json');
+            if (response.ok) {
+                this.weatherStations = await response.json();
+                console.log('✅ Weather stations loaded');
+                if (this.map) {
+                    this.addWeatherStationMarkers();
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ Could not load weather stations file');
+        }
+    }
+
+    initializeMap() {
+        if (!this.weatherStations || typeof google === 'undefined') {
+            console.warn('Weather stations or Google Maps not loaded yet');
+            return;
+        }
+
+        // Initialize the map centered on Shadnagar
+        const centerPoint = this.weatherStations.metadata.center_point;
+        const mapOptions = {
+            zoom: 10,
+            center: { lat: centerPoint.latitude, lng: centerPoint.longitude },
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        this.addWeatherStationMarkers();
+        console.log('✅ Map initialized successfully');
+    }
+
+    addWeatherStationMarkers() {
+        // Clear existing markers
+        this.markers.forEach(marker => marker.setMap(null));
+        this.markers = [];
+
+        const stations = this.weatherStations.weather_stations;
+
+        stations.forEach(station => {
+            const marker = new google.maps.Marker({
+                position: { lat: station.latitude, lng: station.longitude },
+                map: this.map,
+                title: station.name,
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                }
+            });
+
+            // Add click listener for info window
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div>
+                        <h4>${station.name}</h4>
+                        <p><strong>Type:</strong> ${station.type}</p>
+                        <p><strong>District:</strong> ${station.district}</p>
+                        <p><strong>Status:</strong> ${station.status}</p>
+                    </div>
+                `
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(this.map, marker);
+            });
+
+            this.markers.push(marker);
+        });
+
+        console.log(`✅ Added ${this.markers.length} station markers`);
+    }
+
+    showAllStations() {
+        if (!this.map || !this.weatherStations) return;
+
+        // Reset map bounds to show all stations
+        const bounds = new google.maps.LatLngBounds();
+        
+        this.weatherStations.weather_stations.forEach(station => {
+            bounds.extend(new google.maps.LatLng(station.latitude, station.longitude));
+        });
+
+        this.map.fitBounds(bounds);
+    }
+
+    closeStationModal() {
+        document.getElementById('stationModal').style.display = 'none';
     }
 
     async checkHealth() {
@@ -273,16 +399,15 @@ class FarmerAssistant {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-            // Try to use better audio codec
-const options = {
-    mimeType: 'audio/webm;codecs=opus'
-};
+            const options = {
+                mimeType: 'audio/webm;codecs=opus'
+            };
 
-if (MediaRecorder.isTypeSupported(options.mimeType)) {
-    this.mediaRecorder = new MediaRecorder(stream, options);
-} else {
-    this.mediaRecorder = new MediaRecorder(stream);
-}
+            if (MediaRecorder.isTypeSupported(options.mimeType)) {
+                this.mediaRecorder = new MediaRecorder(stream, options);
+            } else {
+                this.mediaRecorder = new MediaRecorder(stream);
+            }
             this.audioChunks = [];
 
             this.mediaRecorder.addEventListener('dataavailable', (event) => {
@@ -290,9 +415,9 @@ if (MediaRecorder.isTypeSupported(options.mimeType)) {
             });
 
             this.mediaRecorder.addEventListener('stop', () => {
-    const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
-    this.convertAudioToBase64(audioBlob);
-});
+                const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+                this.convertAudioToBase64(audioBlob);
+            });
 
             this.mediaRecorder.start();
 
@@ -817,7 +942,16 @@ if (MediaRecorder.isTypeSupported(options.mimeType)) {
     }
 }
 
+// Google Maps callback function
+function initMap() {
+    // This function is called by Google Maps API when it's loaded
+    console.log('🗺️ Google Maps API loaded');
+    if (window.farmerAssistant && window.farmerAssistant.currentMode === 'weather') {
+        window.farmerAssistant.initializeMap();
+    }
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-    new FarmerAssistant();
+    window.farmerAssistant = new FarmerAssistant();
 });
