@@ -260,7 +260,7 @@ class ManagerAgent:
 
     def process_logic_stage(self, session_id: str, processed_input: Dict[str, Any]) -> Dict[str, Any]:
         """Stage 2: Logic Processing"""
-        
+
         # Check for SME expert request first
         if processed_input.get('sme_expert'):
             sme_expert = processed_input['sme_expert']

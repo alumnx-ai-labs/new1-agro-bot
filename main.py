@@ -15,7 +15,7 @@ manager_agent = ManagerAgent()
 firestore_client = FirestoreClient()
 
 @functions_framework.http
-def new_farmer_assistant(request: Request):
+def farmer_assistant(request: Request):
     """
     Main Cloud Function entry point for the Farmer Assistant MVP
     """
@@ -60,11 +60,12 @@ def new_farmer_assistant(request: Request):
         query_type = request_data.get('queryType')  # New field for scheme queries
         text_description = request_data.get('textDescription', '')  # For disease detection context
         farm_settings = request_data.get('farmSettings', {})  # Farm personalization context
+        sme_expert = request_data.get('sme_expert')  # SME expert field
 
-        logger.info(f"Processing request: type={input_type}, user={user_id}, queryType={query_type}")
+        logger.info(f"Processing request: type={input_type}, user={user_id}, queryType={query_type}, sme_expert={sme_expert}")
 
         # Process different input types
-        processed_input = process_input(input_type, content, language, query_type, text_description, farm_settings)
+        processed_input = process_input(input_type, content, language, query_type, text_description, farm_settings, sme_expert)
         
         # Create session
         session_id = firestore_client.create_session(user_id, processed_input)
@@ -86,7 +87,7 @@ def new_farmer_assistant(request: Request):
         
         return json.dumps(error_response), 500, headers
 
-def process_input(input_type: str, content: str, language: str, query_type: str = None, text_description: str = '', farm_settings: dict = None) -> dict:
+def process_input(input_type: str, content: str, language: str, query_type: str = None, text_description: str = '', farm_settings: dict = None, sme_expert: str = None) -> dict:
     """Process different types of input"""
     
     if input_type == 'image':
@@ -97,7 +98,8 @@ def process_input(input_type: str, content: str, language: str, query_type: str 
             'language': language,
             'text': text_description,  # Additional context for disease detection
             'input_type': input_type,
-            'farm_settings': farm_settings
+            'farm_settings': farm_settings,
+            'sme_expert': sme_expert  # Include SME expert if provided
         }
     
     elif input_type == 'audio':
@@ -107,7 +109,8 @@ def process_input(input_type: str, content: str, language: str, query_type: str 
             'audio_data': content,
             'language': language,
             'input_type': input_type,
-            'farm_settings': farm_settings
+            'farm_settings': farm_settings,
+            'sme_expert': sme_expert  # Include SME expert if provided
         }
     
     elif input_type == 'text':
@@ -118,7 +121,8 @@ def process_input(input_type: str, content: str, language: str, query_type: str 
             'content': content,  # Alias for compatibility
             'language': language,
             'input_type': input_type,
-            'farm_settings': farm_settings
+            'farm_settings': farm_settings,
+            'sme_expert': sme_expert  # Include SME expert if provided
         }
         
         # Add query type if specified (helps with routing)
