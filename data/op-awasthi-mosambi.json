@@ -1,0 +1,551 @@
+{
+  "crop_info": {
+    "crop_name": "Sweet Lime",
+    "scientific_name": "Citrus limetta",
+    "common_names": ["Mosambi", "Sweet Lime", "Sweet Limetta"],
+    "family": "Rutaceae",
+    "cultivation_season": "Year-round in tropical regions, October-November planting recommended",
+    "major_growing_regions": ["Maharashtra", "Gujarat", "Andhra Pradesh", "Karnataka", "Tamil Nadu", "Punjab"]
+  },
+  "pests": [
+    {
+      "pest_id": "P001",
+      "pest_name": "Citrus Psylla",
+      "scientific_name": "Diaphorina citri",
+      "pest_type": "Insect",
+      "description": "Small winged insects that feed on plant sap, causing yellowing and curling of leaves. Major vector of Huanglongbing disease.",
+      "symptoms": [
+        "Yellowing and curling of young leaves",
+        "Stunted growth of shoots",
+        "Honeydew secretion on leaves",
+        "Presence of small white waxy deposits"
+      ],
+      "damage_stage": ["Nymph", "Adult"],
+      "affected_parts": ["Leaves", "Young shoots", "Flower buds"],
+      "favorable_conditions": {
+        "temperature": "25-30°C",
+        "humidity": "High humidity (>70%)",
+        "season": "Monsoon and post-monsoon"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Imidacloprid 17.8% SL",
+            "dosage": "0.3-0.5 ml/liter",
+            "application_method": "Foliar spray",
+            "frequency": "15-20 days interval",
+            "safety_period": "21 days before harvest"
+          },
+          {
+            "pesticide_name": "Thiamethoxam 25% WG",
+            "dosage": "0.2-0.3 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 15 days gap",
+            "safety_period": "20 days before harvest"
+          },
+          {
+            "pesticide_name": "Acetamiprid 20% SP",
+            "dosage": "0.2 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "As required with 10-15 days interval",
+            "safety_period": "14 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Release of Tamarixia radiata parasitoid",
+          "Conservation of natural enemies like ladybird beetles",
+          "Neem oil application (10-15 ml/liter)"
+        ],
+        "cultural_control": [
+          "Regular pruning of affected shoots",
+          "Removal of alternate host plants",
+          "Proper sanitation in orchard",
+          "Yellow sticky traps installation"
+        ]
+      }
+    },
+    {
+      "pest_id": "P002",
+      "pest_name": "Citrus Leaf Miner",
+      "scientific_name": "Phyllocnistis citrella",
+      "pest_type": "Insect",
+      "description": "Small moth larvae that create serpentine mines in young leaves, causing silvery trails and leaf distortion.",
+      "symptoms": [
+        "Silvery serpentine trails on young leaves",
+        "Curling and distortion of leaves",
+        "Reduced photosynthetic area",
+        "Entry points for bacterial and fungal infections"
+      ],
+      "damage_stage": ["Larva"],
+      "affected_parts": ["Young leaves", "Tender shoots"],
+      "favorable_conditions": {
+        "temperature": "25-35°C",
+        "humidity": "Moderate to high humidity",
+        "season": "Flush growth periods"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Spinosad 45% SC",
+            "dosage": "0.3 ml/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 15 days interval",
+            "safety_period": "7 days before harvest"
+          },
+          {
+            "pesticide_name": "Emamectin Benzoate 5% SG",
+            "dosage": "0.4 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 15 days gap",
+            "safety_period": "15 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Release of Cirrospilus quadristriatus parasitoid",
+          "Bacillus thuringiensis application",
+          "Neem-based formulations"
+        ],
+        "cultural_control": [
+          "Timing of pruning to avoid flush periods",
+          "Removal of heavily infested leaves",
+          "Proper irrigation management"
+        ]
+      }
+    },
+    {
+      "pest_id": "P003",
+      "pest_name": "Scale Insects",
+      "scientific_name": "Aonidiella aurantii, Lepidosaphes beckii",
+      "pest_type": "Insect",
+      "description": "Small, immobile insects that attach to plant surfaces and suck sap, causing yellowing and weakening of plants.",
+      "symptoms": [
+        "Yellow spots on leaves and fruits",
+        "Sticky honeydew on plant surfaces",
+        "Sooty mold development",
+        "Weakening of branches and twigs"
+      ],
+      "damage_stage": ["Nymph", "Adult"],
+      "affected_parts": ["Leaves", "Branches", "Fruits", "Trunk"],
+      "favorable_conditions": {
+        "temperature": "20-30°C",
+        "humidity": "Low to moderate humidity",
+        "season": "Winter and summer months"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Buprofezin 25% SC",
+            "dosage": "1-1.5 ml/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 20 days interval",
+            "safety_period": "28 days before harvest"
+          },
+          {
+            "pesticide_name": "Spirotetramat 11.01% + Imidacloprid 11.01% SC",
+            "dosage": "1 ml/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 30 days gap",
+            "safety_period": "30 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Release of Aphytis melinus parasitoid",
+          "Horticultural oil sprays (2%)",
+          "Soap solution application"
+        ],
+        "cultural_control": [
+          "Regular monitoring and early detection",
+          "Pruning of heavily infested branches",
+          "Ant management around trees"
+        ]
+      }
+    },
+    {
+      "pest_id": "P004",
+      "pest_name": "Aphids",
+      "scientific_name": "Aphis spiraecola, Toxoptera aurantii",
+      "pest_type": "Insect",
+      "description": "Small soft-bodied insects that cluster on young shoots and leaves, sucking plant sap and secreting honeydew.",
+      "symptoms": [
+        "Curling and yellowing of young leaves",
+        "Sticky honeydew on leaves",
+        "Sooty mold development",
+        "Stunted growth of shoots"
+      ],
+      "damage_stage": ["Nymph", "Adult"],
+      "affected_parts": ["Young leaves", "Tender shoots", "Flower buds"],
+      "favorable_conditions": {
+        "temperature": "20-25°C",
+        "humidity": "Moderate humidity",
+        "season": "Winter and early summer"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Imidacloprid 17.8% SL",
+            "dosage": "0.3 ml/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 15 days interval",
+            "safety_period": "21 days before harvest"
+          },
+          {
+            "pesticide_name": "Pirimicarb 50% WP",
+            "dosage": "1 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "As required with 10-15 days gap",
+            "safety_period": "14 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Conservation of ladybird beetles and lacewings",
+          "Neem oil application (15 ml/liter)",
+          "Release of Aphidius colemani parasitoid"
+        ],
+        "cultural_control": [
+          "Reflective mulches to repel aphids",
+          "Regular inspection and early removal",
+          "Balanced fertilization to avoid excessive nitrogen"
+        ]
+      }
+    }
+  ],
+  "diseases": [
+    {
+      "disease_id": "D001",
+      "disease_name": "Citrus Canker",
+      "scientific_name": "Xanthomonas axonopodis pv. citri",
+      "disease_type": "Bacterial",
+      "description": "Bacterial disease causing raised corky lesions on leaves, twigs, and fruits, leading to defoliation and fruit drop.",
+      "symptoms": [
+        "Raised corky lesions with yellow halos on leaves",
+        "Crater-like lesions on fruits",
+        "Twig dieback and defoliation",
+        "Premature fruit drop"
+      ],
+      "affected_parts": ["Leaves", "Twigs", "Fruits", "Branches"],
+      "favorable_conditions": {
+        "temperature": "25-30°C",
+        "humidity": "High humidity (>85%)",
+        "season": "Monsoon and post-monsoon",
+        "other_factors": "Wind-driven rain, wounds on plant surface"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Copper Oxychloride 50% WP",
+            "dosage": "3 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "15-20 days interval during monsoon",
+            "safety_period": "15 days before harvest"
+          },
+          {
+            "pesticide_name": "Streptomycin Sulphate 90% + Tetracycline 10% SP",
+            "dosage": "0.5 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 15 days gap",
+            "safety_period": "20 days before harvest"
+          },
+          {
+            "pesticide_name": "Bordeaux mixture 1%",
+            "dosage": "10 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "Preventive sprays before monsoon",
+            "safety_period": "7 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Pseudomonas fluorescens application",
+          "Bacillus subtilis-based formulations",
+          "Trichoderma viride soil application"
+        ],
+        "cultural_control": [
+          "Pruning and destruction of infected plant parts",
+          "Windbreaks to reduce wind-driven rain",
+          "Avoid overhead irrigation",
+          "Quarantine measures for new plantings",
+          "Proper sanitation and tool disinfection"
+        ]
+      }
+    },
+    {
+      "disease_id": "D002",
+      "disease_name": "Gummosis",
+      "scientific_name": "Phytophthora spp.",
+      "disease_type": "Fungal",
+      "description": "Fungal disease affecting the trunk and major branches, causing gum exudation and bark cracking.",
+      "symptoms": [
+        "Gum exudation from trunk and branches",
+        "Dark, water-soaked lesions on bark",
+        "Cracking and peeling of bark",
+        "Yellowing and wilting of foliage",
+        "Gradual decline of tree vigor"
+      ],
+      "affected_parts": ["Trunk", "Main branches", "Root collar"],
+      "favorable_conditions": {
+        "temperature": "20-28°C",
+        "humidity": "High soil moisture",
+        "season": "Monsoon and winter",
+        "other_factors": "Poor drainage, mechanical injuries"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Metalaxyl 8% + Mancozeb 64% WP",
+            "dosage": "2.5 g/liter",
+            "application_method": "Trunk and soil application",
+            "frequency": "3 applications with 30 days interval",
+            "safety_period": "45 days before harvest"
+          },
+          {
+            "pesticide_name": "Fosetyl Aluminium 80% WP",
+            "dosage": "2 g/liter",
+            "application_method": "Soil drench and foliar spray",
+            "frequency": "2-3 applications with 45 days gap",
+            "safety_period": "60 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma harzianum soil application",
+          "Pseudomonas fluorescens treatment",
+          "Bacillus subtilis formulations"
+        ],
+        "cultural_control": [
+          "Improve soil drainage",
+          "Avoid water stagnation around tree base",
+          "Remove affected bark and apply Bordeaux paste",
+          "Avoid mechanical injuries to trunk",
+          "Proper mulching to maintain soil moisture"
+        ]
+      }
+    },
+    {
+      "disease_id": "D003",
+      "disease_name": "Anthracnose",
+      "scientific_name": "Colletotrichum gloeosporioides",
+      "disease_type": "Fungal",
+      "description": "Fungal disease causing dark lesions on leaves, twigs, and fruits, leading to defoliation and fruit rot.",
+      "symptoms": [
+        "Dark brown to black lesions on leaves",
+        "Twig dieback from tip backwards",
+        "Fruit rot with dark sunken spots",
+        "Premature fruit and leaf drop"
+      ],
+      "affected_parts": ["Leaves", "Twigs", "Fruits", "Flowers"],
+      "favorable_conditions": {
+        "temperature": "25-30°C",
+        "humidity": "High humidity (>80%)",
+        "season": "Monsoon period",
+        "other_factors": "Overhead irrigation, dense canopy"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Mancozeb 75% WP",
+            "dosage": "2 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "15-20 days interval during monsoon",
+            "safety_period": "15 days before harvest"
+          },
+          {
+            "pesticide_name": "Carbendazim 50% WP",
+            "dosage": "1 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 20 days gap",
+            "safety_period": "21 days before harvest"
+          },
+          {
+            "pesticide_name": "Propiconazole 25% EC",
+            "dosage": "1 ml/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 21 days interval",
+            "safety_period": "30 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma viride application",
+          "Bacillus subtilis sprays",
+          "Neem oil with Pseudomonas fluorescens"
+        ],
+        "cultural_control": [
+          "Pruning for better air circulation",
+          "Removal and destruction of infected plant parts",
+          "Avoid overhead irrigation",
+          "Proper spacing between plants",
+          "Balanced nutrition management"
+        ]
+      }
+    },
+    {
+      "disease_id": "D004",
+      "disease_name": "Powdery Mildew",
+      "scientific_name": "Erysiphe cichoracearum",
+      "disease_type": "Fungal",
+      "description": "Fungal disease causing white powdery growth on leaves and young shoots, reducing photosynthesis and plant vigor.",
+      "symptoms": [
+        "White powdery coating on upper leaf surface",
+        "Yellowing and curling of affected leaves",
+        "Stunted growth of young shoots",
+        "Premature leaf drop in severe cases"
+      ],
+      "affected_parts": ["Leaves", "Young shoots", "Flower buds"],
+      "favorable_conditions": {
+        "temperature": "20-25°C",
+        "humidity": "Low to moderate humidity with dry conditions",
+        "season": "Winter and early summer",
+        "other_factors": "Dense plant canopy, poor air circulation"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Sulphur 80% WP",
+            "dosage": "2-3 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "15 days interval",
+            "safety_period": "7 days before harvest"
+          },
+          {
+            "pesticide_name": "Hexaconazole 5% EC",
+            "dosage": "2 ml/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 20 days gap",
+            "safety_period": "35 days before harvest"
+          },
+          {
+            "pesticide_name": "Myclobutanil 10% WP",
+            "dosage": "1 g/liter",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 21 days interval",
+            "safety_period": "28 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Bacillus subtilis application",
+          "Trichoderma harzianum sprays",
+          "Milk spray (1:10 ratio with water)"
+        ],
+        "cultural_control": [
+          "Proper pruning for air circulation",
+          "Avoid excess nitrogen fertilization",
+          "Morning irrigation to allow foliage to dry",
+          "Resistant variety selection"
+        ]
+      }
+    },
+    {
+      "disease_id": "D005",
+      "disease_name": "Root Rot",
+      "scientific_name": "Phytophthora nicotianae",
+      "disease_type": "Fungal",
+      "description": "Soil-borne fungal disease affecting root system, causing poor nutrient uptake and eventual plant death.",
+      "symptoms": [
+        "Yellowing and wilting of leaves",
+        "Stunted growth and poor vigor",
+        "Dark, rotted roots with foul smell",
+        "Easy uprooting of affected plants",
+        "Gradual decline and death of trees"
+      ],
+      "affected_parts": ["Root system", "Root collar", "Lower trunk"],
+      "favorable_conditions": {
+        "temperature": "25-30°C",
+        "humidity": "Waterlogged soil conditions",
+        "season": "Monsoon and post-monsoon",
+        "other_factors": "Poor drainage, heavy clay soils"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Metalaxyl 8% + Mancozeb 64% WP",
+            "dosage": "2.5 g/liter",
+            "application_method": "Soil drench",
+            "frequency": "3 applications with 30 days interval",
+            "safety_period": "45 days before harvest"
+          },
+          {
+            "pesticide_name": "Copper Sulphate 25% WP",
+            "dosage": "3 g/liter",
+            "application_method": "Soil application",
+            "frequency": "2-3 applications with 45 days gap",
+            "safety_period": "30 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma viride soil incorporation",
+          "Pseudomonas fluorescens root treatment",
+          "Bacillus subtilis soil application"
+        ],
+        "cultural_control": [
+          "Improve soil drainage system",
+          "Raised bed cultivation",
+          "Avoid overwatering",
+          "Organic matter addition to soil",
+          "Crop rotation with non-host plants",
+          "Use of resistant rootstocks"
+        ]
+      }
+    }
+  ],
+  "integrated_pest_management": {
+    "monitoring_schedule": {
+      "weekly_monitoring": [
+        "Visual inspection for pest presence",
+        "Check for disease symptoms",
+        "Monitor weather conditions"
+      ],
+      "monthly_assessment": [
+        "Detailed canopy inspection",
+        "Soil health evaluation",
+        "Beneficial insect population check"
+      ]
+    },
+    "preventive_measures": [
+      "Regular pruning for air circulation",
+      "Proper nutrition management",
+      "Timely irrigation practices",
+      "Orchard sanitation",
+      "Use of pheromone traps",
+      "Quarantine measures for new plants"
+    ],
+    "threshold_levels": {
+      "citrus_psylla": "5-10 adults per 100 shoots",
+      "leaf_miner": "25% infested leaves",
+      "scale_insects": "2-3 scales per leaf",
+      "aphids": "10-15 aphids per shoot"
+    }
+  },
+  "application_guidelines": {
+    "spray_timing": "Early morning (6-10 AM) or late evening (4-6 PM)",
+    "weather_conditions": "Avoid spraying during windy or rainy conditions",
+    "spray_coverage": "Ensure thorough coverage of undersides of leaves",
+    "equipment_maintenance": "Regular calibration and cleaning of spray equipment",
+    "safety_measures": [
+      "Use protective clothing during application",
+      "Follow label instructions strictly",
+      "Maintain proper pre-harvest intervals",
+      "Store pesticides in cool, dry places",
+      "Keep records of all applications"
+    ]
+  },
+  "resistance_management": {
+    "strategies": [
+      "Rotate between different modes of action",
+      "Use combination products when appropriate",
+      "Integrate biological and cultural controls",
+      "Monitor for resistance development",
+      "Follow recommended dosages strictly"
+    ],
+    "mode_of_action_groups": {
+      "insecticides": {
+        "Group_4A": "Neonicotinoids (Imidacloprid, Thiamethoxam)",
+        "Group_5": "Spinosyns (Spinosad)",
+        "Group_6": "Avermectins (Emamectin benzoate)",
+        "Group_9B": "Pyridinecarboxamides (Pirimicarb)"
+      },
+      "fungicides": {
+        "Group_M": "Multi-site (Mancozeb, Copper compounds)",
+        "Group_1": "MBC (Carbendazim)",
+        "Group_3": "DMI (Propiconazole, Hexaconazole)",
+        "Group_4": "Phenylamides (Metalaxyl)"
+      }
+    }
+  }
+}

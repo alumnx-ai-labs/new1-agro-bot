@@ -1,0 +1,906 @@
+{
+  "crop_info": {
+    "crop_name": "Wheat",
+    "scientific_name": "Triticum aestivum",
+    "common_names": ["Common Wheat", "Bread Wheat", "Gehun"],
+    "family": "Poaceae",
+    "cultivation_season": "Rabi season (October-November to April-May)",
+    "major_growing_regions": ["Punjab", "Haryana", "Uttar Pradesh", "Madhya Pradesh", "Rajasthan", "Bihar", "Gujarat"]
+  },
+  "pests": [
+    {
+      "pest_id": "P001",
+      "pest_name": "Aphids",
+      "scientific_name": "Sitobion avenae, Rhopalosiphum padi",
+      "pest_type": "Insect",
+      "description": "Small soft-bodied insects that cluster on leaves and stems, sucking plant sap and potentially transmitting viral diseases.",
+      "symptoms": [
+        "Yellowing and curling of leaves",
+        "Sticky honeydew on plant surfaces",
+        "Stunted plant growth",
+        "Sooty mold development on honeydew",
+        "Reduced grain filling"
+      ],
+      "damage_stage": ["Nymph", "Adult"],
+      "affected_parts": ["Leaves", "Stems", "Ears", "Flag leaf"],
+      "favorable_conditions": {
+        "temperature": "15-25°C",
+        "humidity": "Moderate to high humidity (60-80%)",
+        "season": "Late winter to early spring (February-March)"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Imidacloprid 17.8% SL",
+            "dosage": "100-125 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Single application at early infestation",
+            "safety_period": "37 days before harvest"
+          },
+          {
+            "pesticide_name": "Thiamethoxam 25% WG",
+            "dosage": "100 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply when aphid population exceeds threshold",
+            "safety_period": "35 days before harvest"
+          },
+          {
+            "pesticide_name": "Dimethoate 30% EC",
+            "dosage": "400-500 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "1-2 applications with 15 days interval",
+            "safety_period": "30 days before harvest"
+          },
+          {
+            "pesticide_name": "Pirimicarb 50% WP",
+            "dosage": "300-400 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply at economic threshold level",
+            "safety_period": "14 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Conservation of ladybird beetles and lacewings",
+          "Release of Aphidius colemani parasitoid",
+          "Neem oil application (1500-2000 ml/ha)",
+          "Encourage natural predators like syrphid flies"
+        ],
+        "cultural_control": [
+          "Early sowing to avoid peak aphid period",
+          "Balanced fertilization avoiding excess nitrogen",
+          "Regular field monitoring",
+          "Removal of alternate host weeds",
+          "Use of reflective mulches"
+        ]
+      }
+    },
+    {
+      "pest_id": "P002",
+      "pest_name": "Termites",
+      "scientific_name": "Odontotermes obesus, Microtermes obesi",
+      "pest_type": "Insect",
+      "description": "Soil-dwelling insects that attack wheat plants at ground level, cutting stems and causing plant wilting and death.",
+      "symptoms": [
+        "Wilting and drying of plants",
+        "Cut stems at ground level",
+        "Mud tubes on plant stems",
+        "Hollowing of stems",
+        "Patches of damaged plants in field"
+      ],
+      "damage_stage": ["Worker", "Soldier"],
+      "affected_parts": ["Roots", "Stem base", "Underground parts"],
+      "favorable_conditions": {
+        "temperature": "25-35°C",
+        "humidity": "High soil moisture",
+        "season": "Early crop stage and during dry spells"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Chlorpyrifos 20% EC",
+            "dosage": "2.5-3 liters/ha",
+            "application_method": "Soil application with irrigation",
+            "frequency": "Single application at sowing",
+            "safety_period": "30 days before harvest"
+          },
+          {
+            "pesticide_name": "Fipronil 5% SC",
+            "dosage": "1000-1500 ml/ha",
+            "application_method": "Soil drench",
+            "frequency": "Apply at first sign of attack",
+            "safety_period": "45 days before harvest"
+          },
+          {
+            "pesticide_name": "Bifenthrin 10% EC",
+            "dosage": "500 ml/ha",
+            "application_method": "Soil application",
+            "frequency": "Pre-sowing soil treatment",
+            "safety_period": "35 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Use of entomopathogenic nematodes",
+          "Beauveria bassiana application in soil",
+          "Metarhizium anisopliae formulations",
+          "Conservation of predatory ants"
+        ],
+        "cultural_control": [
+          "Deep summer plowing to expose colonies",
+          "Removal of crop residues and stubbles",
+          "Flood irrigation to destroy colonies",
+          "Use of resistant/tolerant varieties",
+          "Crop rotation with non-host crops"
+        ]
+      }
+    },
+    {
+      "pest_id": "P003",
+      "pest_name": "Army Worm",
+      "scientific_name": "Spodoptera exempta, Mythimna separata",
+      "pest_type": "Insect",
+      "description": "Caterpillars that feed on wheat leaves and can cause severe defoliation, moving in groups across fields.",
+      "symptoms": [
+        "Irregular holes in leaves",
+        "Complete defoliation in severe cases",
+        "Presence of dark-colored caterpillars",
+        "Feeding during night hours",
+        "Webbing on plant parts"
+      ],
+      "damage_stage": ["Larva"],
+      "affected_parts": ["Leaves", "Young shoots", "Tillers"],
+      "favorable_conditions": {
+        "temperature": "20-30°C",
+        "humidity": "High humidity (>70%)",
+        "season": "Late winter and early spring"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Chlorpyrifos 20% EC",
+            "dosage": "1250-1500 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply at early larval stage",
+            "safety_period": "30 days before harvest"
+          },
+          {
+            "pesticide_name": "Spinosad 45% SC",
+            "dosage": "200-250 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 10-15 days interval",
+            "safety_period": "7 days before harvest"
+          },
+          {
+            "pesticide_name": "Emamectin Benzoate 5% SG",
+            "dosage": "200-250 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply when larvae are young",
+            "safety_period": "15 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Bacillus thuringiensis application",
+          "Release of Trichogramma parasitoids",
+          "NPV (Nuclear Polyhedrosis Virus) application",
+          "Conservation of natural enemies"
+        ],
+        "cultural_control": [
+          "Early detection through pheromone traps",
+          "Hand picking of egg masses and larvae",
+          "Deep plowing after harvest",
+          "Intercropping with trap crops",
+          "Light traps to catch adult moths"
+        ]
+      }
+    },
+    {
+      "pest_id": "P004",
+      "pest_name": "Wheat Stem Sawfly",
+      "scientific_name": "Cephus pygmeus",
+      "pest_type": "Insect",
+      "description": "Larvae bore into wheat stems causing them to weaken and break, leading to lodging and yield loss.",
+      "symptoms": [
+        "Stem breakage and lodging",
+        "Hollow stems with larval tunnels",
+        "Weakened plants that bend easily",
+        "Reduced grain filling",
+        "Presence of sawdust-like frass"
+      ],
+      "damage_stage": ["Larva"],
+      "affected_parts": ["Stems", "Culms"],
+      "favorable_conditions": {
+        "temperature": "20-25°C",
+        "humidity": "Moderate humidity",
+        "season": "Stem elongation to grain filling stage"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Carbofuran 3% CG",
+            "dosage": "25-30 kg/ha",
+            "application_method": "Soil application at sowing",
+            "frequency": "Single application",
+            "safety_period": "60 days before harvest"
+          },
+          {
+            "pesticide_name": "Phorate 10% CG",
+            "dosage": "10-12 kg/ha",
+            "application_method": "Soil application",
+            "frequency": "At sowing time",
+            "safety_period": "75 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Conservation of parasitic wasps",
+          "Use of entomopathogenic nematodes",
+          "Beauveria bassiana applications"
+        ],
+        "cultural_control": [
+          "Use of solid-stemmed varieties",
+          "Early harvest to avoid late infestation",
+          "Stubble management and burning",
+          "Crop rotation with non-host crops",
+          "Avoid late sowing"
+        ]
+      }
+    },
+    {
+      "pest_id": "P005",
+      "pest_name": "Shoot Fly",
+      "scientific_name": "Atherigona soccata",
+      "pest_type": "Insect",
+      "description": "Small flies whose larvae bore into young wheat shoots causing central shoot death and tillering reduction.",
+      "symptoms": [
+        "Dead heart symptom in young plants",
+        "Central shoot drying and death",
+        "Reduced tillering",
+        "Stunted plant growth",
+        "Presence of small maggots in stems"
+      ],
+      "damage_stage": ["Larva"],
+      "affected_parts": ["Young shoots", "Growing points", "Tillers"],
+      "favorable_conditions": {
+        "temperature": "25-30°C",
+        "humidity": "Moderate humidity",
+        "season": "Early crop stage (15-45 days after sowing)"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Carbofuran 3% CG",
+            "dosage": "25 kg/ha",
+            "application_method": "Soil application at sowing",
+            "frequency": "Single application",
+            "safety_period": "60 days before harvest"
+          },
+          {
+            "pesticide_name": "Imidacloprid 17.8% SL",
+            "dosage": "125 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply at early infestation",
+            "safety_period": "37 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Conservation of natural enemies",
+          "Use of parasitoid wasps",
+          "Neem-based formulations"
+        ],
+        "cultural_control": [
+          "Timely sowing (avoid late sowing)",
+          "Use of resistant varieties",
+          "Proper field sanitation",
+          "Balanced fertilization",
+          "Regular monitoring of fields"
+        ]
+      }
+    }
+  ],
+  "diseases": [
+    {
+      "disease_id": "D001",
+      "disease_name": "Leaf Rust",
+      "scientific_name": "Puccinia triticina",
+      "disease_type": "Fungal",
+      "description": "Fungal disease causing orange-brown pustules on leaves, leading to reduced photosynthesis and yield loss.",
+      "symptoms": [
+        "Orange-brown pustules on upper leaf surface",
+        "Yellowing and drying of leaves",
+        "Premature leaf senescence",
+        "Reduced grain filling",
+        "Powdery orange spores on leaves"
+      ],
+      "affected_parts": ["Leaves", "Leaf sheaths"],
+      "favorable_conditions": {
+        "temperature": "15-25°C",
+        "humidity": "High humidity (>70%) with dew formation",
+        "season": "Late winter to early spring (February-March)"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Propiconazole 25% EC",
+            "dosage": "500-625 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 15-20 days interval",
+            "safety_period": "35 days before harvest"
+          },
+          {
+            "pesticide_name": "Tebuconazole 25.9% EC",
+            "dosage": "500 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply at first appearance of symptoms",
+            "safety_period": "42 days before harvest"
+          },
+          {
+            "pesticide_name": "Mancozeb 75% WP",
+            "dosage": "2000-2500 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 15 days interval",
+            "safety_period": "15 days before harvest"
+          },
+          {
+            "pesticide_name": "Zineb 75% WP",
+            "dosage": "2000 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Preventive sprays at 15 days interval",
+            "safety_period": "14 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma harzianum application",
+          "Bacillus subtilis-based formulations",
+          "Pseudomonas fluorescens treatments"
+        ],
+        "cultural_control": [
+          "Use of resistant varieties",
+          "Crop rotation with non-host crops",
+          "Removal of volunteer plants",
+          "Balanced fertilization",
+          "Avoid late sowing",
+          "Proper field sanitation"
+        ]
+      }
+    },
+    {
+      "disease_id": "D002",
+      "disease_name": "Yellow Rust",
+      "scientific_name": "Puccinia striiformis f.sp. tritici",
+      "disease_type": "Fungal",
+      "description": "Fungal disease causing yellow stripes on leaves, severely affecting photosynthesis and grain development.",
+      "symptoms": [
+        "Yellow stripe pustules parallel to leaf veins",
+        "Yellowing of entire leaf",
+        "Stunted plant growth",
+        "Reduced tillering",
+        "Poor grain development"
+      ],
+      "affected_parts": ["Leaves", "Leaf sheaths", "Glumes"],
+      "favorable_conditions": {
+        "temperature": "10-15°C",
+        "humidity": "High humidity with cool, moist conditions",
+        "season": "Winter months (December-February)"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Tebuconazole 25.9% EC",
+            "dosage": "500-750 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 20 days interval",
+            "safety_period": "42 days before harvest"
+          },
+          {
+            "pesticide_name": "Propiconazole 25% EC",
+            "dosage": "500 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply at early disease stage",
+            "safety_period": "35 days before harvest"
+          },
+          {
+            "pesticide_name": "Hexaconazole 5% EC",
+            "dosage": "1000-1500 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2 sprays with 15-20 days gap",
+            "safety_period": "50 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma viride application",
+          "Bacillus subtilis treatments",
+          "Copper-based organic formulations"
+        ],
+        "cultural_control": [
+          "Grow resistant varieties",
+          "Adjust sowing dates",
+          "Remove infected plant debris",
+          "Avoid excess nitrogen application",
+          "Proper plant spacing for air circulation"
+        ]
+      }
+    },
+    {
+      "disease_id": "D003",
+      "disease_name": "Powdery Mildew",
+      "scientific_name": "Blumeria graminis f.sp. tritici",
+      "disease_type": "Fungal",
+      "description": "Fungal disease causing white powdery growth on leaves and stems, reducing plant vigor and yield.",
+      "symptoms": [
+        "White powdery coating on leaves and stems",
+        "Yellowing of affected leaves",
+        "Stunted plant growth",
+        "Reduced grain weight",
+        "Premature senescence"
+      ],
+      "affected_parts": ["Leaves", "Stems", "Ears"],
+      "favorable_conditions": {
+        "temperature": "15-22°C",
+        "humidity": "Moderate humidity (50-70%)",
+        "season": "Late winter to early spring"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Sulphur 80% WP",
+            "dosage": "2000-3000 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 applications with 15 days interval",
+            "safety_period": "7 days before harvest"
+          },
+          {
+            "pesticide_name": "Triadimefon 25% WP",
+            "dosage": "500 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 20 days gap",
+            "safety_period": "30 days before harvest"
+          },
+          {
+            "pesticide_name": "Myclobutanil 10% WP",
+            "dosage": "1000 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Apply at early symptom appearance",
+            "safety_period": "35 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Bacillus subtilis application",
+          "Trichoderma harzianum treatments",
+          "Milk spray (1:10 ratio) for organic control"
+        ],
+        "cultural_control": [
+          "Use resistant varieties",
+          "Adequate plant spacing",
+          "Balanced nutrition management",
+          "Avoid late sowing",
+          "Remove infected crop residues"
+        ]
+      }
+    },
+    {
+      "disease_id": "D004",
+      "disease_name": "Loose Smut",
+      "scientific_name": "Ustilago nuda f.sp. tritici",
+      "disease_type": "Fungal",
+      "description": "Seed-borne fungal disease that replaces grain with black spore masses, causing total yield loss in affected ears.",
+      "symptoms": [
+        "Black powdery spore masses replacing grains",
+        "Affected ears emerge early",
+        "Complete destruction of grains in infected ears",
+        "Spores dispersed by wind",
+        "Stems remain intact while grains are destroyed"
+      ],
+      "affected_parts": ["Grains", "Ears", "Inflorescence"],
+      "favorable_conditions": {
+        "temperature": "16-22°C during flowering",
+        "humidity": "Moderate humidity",
+        "season": "Flowering to grain development stage"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Carboxin 75% WP",
+            "dosage": "2-2.5 g/kg seed",
+            "application_method": "Seed treatment",
+            "frequency": "Single treatment before sowing",
+            "safety_period": "Not applicable (seed treatment)"
+          },
+          {
+            "pesticide_name": "Tebuconazole 2% DS",
+            "dosage": "1.5-2 g/kg seed",
+            "application_method": "Seed treatment",
+            "frequency": "Before sowing",
+            "safety_period": "Not applicable (seed treatment)"
+          },
+          {
+            "pesticide_name": "Carbendazim 50% WP",
+            "dosage": "2.5 g/kg seed",
+            "application_method": "Seed treatment",
+            "frequency": "Single application",
+            "safety_period": "Not applicable (seed treatment)"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma viride seed treatment",
+          "Pseudomonas fluorescens seed coating",
+          "Bacillus subtilis formulations"
+        ],
+        "cultural_control": [
+          "Use certified disease-free seeds",
+          "Hot water treatment of seeds (52°C for 11 minutes)",
+          "Crop rotation with non-cereal crops",
+          "Remove and destroy infected plants",
+          "Use resistant varieties"
+        ]
+      }
+    },
+    {
+      "disease_id": "D005",
+      "disease_name": "Covered Smut",
+      "scientific_name": "Tilletia caries, Tilletia foetida",
+      "disease_type": "Fungal",
+      "description": "Seed-borne fungal disease that converts grains into dark spore-filled structures with fishy odor.",
+      "symptoms": [
+        "Grains replaced by black spore masses",
+        "Fishy odor from infected grains",
+        "Infected ears appear normal externally",
+        "Spores released when grains are crushed",
+        "Slightly stunted plants"
+      ],
+      "affected_parts": ["Grains", "Kernels"],
+      "favorable_conditions": {
+        "temperature": "5-10°C during germination",
+        "humidity": "Cool, moist soil conditions",
+        "season": "Early crop stage (germination to tillering)"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Carboxin 75% WP",
+            "dosage": "2.5 g/kg seed",
+            "application_method": "Seed treatment",
+            "frequency": "Before sowing",
+            "safety_period": "Not applicable (seed treatment)"
+          },
+          {
+            "pesticide_name": "Tebuconazole 2% DS",
+            "dosage": "2 g/kg seed",
+            "application_method": "Seed treatment",
+            "frequency": "Single treatment",
+            "safety_period": "Not applicable (seed treatment)"
+          },
+          {
+            "pesticide_name": "Thiram 75% WS",
+            "dosage": "2.5-3 g/kg seed",
+            "application_method": "Seed treatment",
+            "frequency": "Before planting",
+            "safety_period": "Not applicable (seed treatment)"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma harzianum seed treatment",
+          "Bacillus subtilis seed coating",
+          "Organic seed treatments"
+        ],
+        "cultural_control": [
+          "Use healthy, certified seeds",
+          "Seed selection and cleaning",
+          "Crop rotation",
+          "Deep plowing to bury infected debris",
+          "Avoid using infected grain as seed"
+        ]
+      }
+    },
+    {
+      "disease_id": "D006",
+      "disease_name": "Septoria Leaf Blotch",
+      "scientific_name": "Septoria tritici",
+      "disease_type": "Fungal",
+      "description": "Fungal disease causing irregular brown spots with dark margins on leaves, reducing photosynthetic area.",
+      "symptoms": [
+        "Irregular brown spots with dark borders",
+        "Small black dots (pycnidia) in lesions",
+        "Yellowing and drying of leaves",
+        "Progressive movement from lower to upper leaves",
+        "Reduced green leaf area"
+      ],
+      "affected_parts": ["Leaves", "Leaf sheaths", "Glumes"],
+      "favorable_conditions": {
+        "temperature": "18-25°C",
+        "humidity": "High humidity (>85%) with prolonged leaf wetness",
+        "season": "Late winter to spring with frequent rains"
+      },
+      "remedial_measures": {
+        "chemical_control": [
+          {
+            "pesticide_name": "Propiconazole 25% EC",
+            "dosage": "500 ml/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2 applications with 20 days interval",
+            "safety_period": "35 days before harvest"
+          },
+          {
+            "pesticide_name": "Chlorothalonil 75% WP",
+            "dosage": "1500-2000 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "2-3 sprays with 15 days gap",
+            "safety_period": "21 days before harvest"
+          },
+          {
+            "pesticide_name": "Mancozeb 75% WP",
+            "dosage": "2000 g/ha",
+            "application_method": "Foliar spray",
+            "frequency": "Preventive sprays at 15-20 days interval",
+            "safety_period": "15 days before harvest"
+          }
+        ],
+        "biological_control": [
+          "Trichoderma viride applications",
+          "Bacillus subtilis treatments",
+          "Copper-based organic fungicides"
+        ],
+        "cultural_control": [
+          "Use resistant varieties",
+          "Crop rotation with non-cereal crops",
+          "Removal of infected crop residues",
+          "Balanced fertilization",
+          "Proper plant spacing for air circulation"
+        ]
+      }
+    }
+  ],
+  "integrated_pest_management": {
+    "monitoring_schedule": {
+      "weekly_monitoring": [
+        "Visual inspection for pest and disease symptoms",
+        "Weather monitoring for disease-favorable conditions",
+        "Growth stage assessment"
+      ],
+      "bi_weekly_assessment": [
+        "Detailed field scouting",
+        "Pest population counting",
+        "Disease severity assessment",
+        "Natural enemy population check"
+      ],
+      "monthly_evaluation": [
+        "Overall crop health assessment",
+        "Yield impact evaluation",
+        "Resistance monitoring"
+      ]
+    },
+    "preventive_measures": [
+      "Use of certified disease-free seeds",
+      "Proper seed treatment before sowing",
+      "Timely sowing according to recommendations",
+      "Balanced nutrition management",
+      "Proper field sanitation",
+      "Crop rotation practices",
+      "Use of resistant varieties"
+    ],
+    "threshold_levels": {
+      "aphids": "5-10 aphids per tiller",
+      "army_worm": "2-3 larvae per square meter",
+      "termites": "10% plant damage",
+      "leaf_rust": "5-10% leaf area affected",
+      "yellow_rust": "1-5% severity at milk stage"
+    }
+  },
+  "application_guidelines": {
+    "spray_timing": "Early morning (6-10 AM) or late evening (4-7 PM)",
+    "weather_conditions": "Avoid spraying during windy conditions (>10 km/hr) or before expected rain",
+    "spray_coverage": "Ensure uniform coverage with proper droplet size",
+    "equipment_maintenance": "Regular calibration and cleaning of spray equipment",
+    "water_quality": "Use clean water with appropriate pH (6.5-7.5)",
+    "safety_measures": [
+      "Use protective clothing and equipment",
+      "Follow label instructions strictly",
+      "Maintain recommended pre-harvest intervals",
+      "Store pesticides safely away from food and feed",
+      "Keep detailed application records",
+      "Avoid drift to neighboring crops"
+    ]
+  },
+  "resistance_management": {
+    "strategies": [
+      "Rotate fungicides with different modes of action",
+      "Use tank mixtures when recommended",
+      "Follow recommended dosages strictly",
+      "Integrate chemical, biological, and cultural controls",
+      "Monitor for resistance development",
+      "Use fungicides only when necessary"
+    ],
+    "mode_of_action_groups": {
+      "insecticides": {
+        "Group_1A": "Carbamates (Carbofuran)",
+        "Group_1B": "Organophosphates (Chlorpyrifos, Dimethoate)",
+        "Group_4A": "Neonicotinoids (Imidacloprid, Thiamethoxam)",
+        "Group_5": "Spinosyns (Spinosad)",
+        "Group_6": "Avermectins (Emamectin benzoate)",
+        "Group_9B": "Pyridinecarboxamides (Pirimicarb)"
+      },
+      "fungicides": {
+        "Group_M": "Multi-site (Mancozeb, Chlorothalonil, Sulphur)",
+        "Group_1": "MBC (Carbendazim)",
+        "Group_3": "DMI (Propiconazole, Tebuconazole, Hexaconazole)",
+        "Group_7": "SDHI (Carboxin)",
+        "Group_11": "QoI (Strobilurins)"
+      }
+    }
+  },
+  "growth_stage_specific_management": {
+    "germination_to_tillering": {
+      "key_pests": ["Termites", "Shoot fly"],
+      "key_diseases": ["Covered smut", "Loose smut"],
+      "management_focus": "Seed treatment, soil application of insecticides"
+    },
+    "tillering_to_jointing": {
+      "key_pests": ["Aphids", "Army worm"],
+      "key_diseases": ["Yellow rust", "Powdery mildew"],
+      "management_focus": "Foliar sprays, disease monitoring"
+    },
+    "jointing_to_heading": {
+      "key_pests": ["Stem sawfly", "Aphids"],
+      "key_diseases": ["Leaf rust", "Septoria leaf blotch"],
+      "management_focus": "Systemic fungicides, pest monitoring"
+    },
+    "heading_to_grain_filling": {
+      "key_pests": ["Aphids", "Army worm"],
+      "key_diseases": ["Leaf rust", "Powdery mildew"],
+      "management_focus": "Protection of flag leaf, grain protection"
+    },
+    "grain_filling_to_maturity": {
+      "key_pests": ["Storage pests prevention"],
+      "key_diseases": ["Post-harvest disease prevention"],
+      "management_focus": "Pre-harvest intervals, quality maintenance"
+    }
+  },
+  "seasonal_management_calendar": {
+    "october_november": {
+      "activities": [
+        "Seed treatment with fungicides and insecticides",
+        "Soil application of termiticides",
+        "Sowing of wheat crop",
+        "Early monitoring for germination issues"
+      ],
+      "key_focus": "Establishment phase protection"
+    },
+    "december_january": {
+      "activities": [
+        "Monitor for yellow rust in cool conditions",
+        "Aphid population monitoring",
+        "First irrigation and fertilizer application",
+        "Weed management"
+      ],
+      "key_focus": "Tillering stage management"
+    },
+    "february_march": {
+      "activities": [
+        "Peak disease and pest activity period",
+        "Foliar fungicide applications",
+        "Aphid and army worm management",
+        "Flag leaf protection"
+      ],
+      "key_focus": "Critical growth stage protection"
+    },
+    "april_may": {
+      "activities": [
+        "Final disease and pest monitoring",
+        "Pre-harvest interval compliance",
+        "Harvest preparation",
+        "Storage pest prevention"
+      ],
+      "key_focus": "Grain quality protection"
+    }
+  },
+  "economic_considerations": {
+    "cost_effective_practices": [
+      "Use of certified seeds to reduce disease pressure",
+      "Timely sowing to avoid peak pest periods",
+      "Integrated pest management to reduce chemical costs",
+      "Resistant varieties to minimize spray requirements",
+      "Proper calibration to avoid wastage"
+    ],
+    "return_on_investment": {
+      "seed_treatment": "High ROI with minimal cost",
+      "timely_sprays": "Medium to high ROI if applied at right time",
+      "resistant_varieties": "Long-term cost savings",
+      "ipm_practices": "Sustainable cost reduction"
+    }
+  },
+  "environmental_considerations": {
+    "sustainable_practices": [
+      "Reduce chemical pesticide dependency",
+      "Promote beneficial insect conservation",
+      "Use biological control agents",
+      "Implement crop rotation",
+      "Proper disposal of pesticide containers"
+    ],
+    "pollinator_protection": [
+      "Avoid spraying during flowering if bees are active",
+      "Use selective pesticides when possible",
+      "Time applications to minimize bee exposure",
+      "Maintain flowering buffer strips"
+    ]
+  },
+  "quality_and_storage_considerations": {
+    "harvest_quality": [
+      "Maintain pre-harvest intervals strictly",
+      "Monitor moisture content at harvest",
+      "Avoid harvesting diseased grain",
+      "Proper cleaning and grading"
+    ],
+    "storage_protection": [
+      "Proper drying to 12-14% moisture",
+      "Clean storage facilities",
+      "Monitor for storage pests",
+      "Use appropriate fumigants if needed"
+    ]
+  },
+  "emergency_management": {
+    "outbreak_response": {
+      "yellow_rust_epidemic": [
+        "Immediate application of systemic fungicides",
+        "Increase spray frequency if needed",
+        "Monitor spread to neighboring fields",
+        "Report to agricultural authorities"
+      ],
+      "army_worm_outbreak": [
+        "Immediate insecticide application",
+        "Community-wide coordinated control",
+        "Use of light traps and pheromone traps",
+        "Biological control agent release"
+      ],
+      "aphid_explosion": [
+        "Quick-acting insecticide application",
+        "Monitor for virus transmission",
+        "Encourage natural enemy activity",
+        "Adjust irrigation and fertilization"
+      ]
+    }
+  },
+  "record_keeping": {
+    "essential_records": [
+      "Pest and disease occurrence dates",
+      "Chemical applications with dates and rates",
+      "Weather conditions during applications",
+      "Efficacy of treatments",
+      "Resistance observations",
+      "Yield and quality data"
+    ],
+    "digital_tools": [
+      "Mobile apps for field monitoring",
+      "Weather-based disease prediction models",
+      "GPS-based application mapping",
+      "Digital spray records"
+    ]
+  },
+  "training_and_extension": {
+    "farmer_education": [
+      "Pest and disease identification training",
+      "Proper pesticide application techniques",
+      "Safety measures and protective equipment use",
+      "IPM strategy implementation",
+      "Record keeping importance"
+    ],
+    "extension_support": [
+      "Regular field visits by extension agents",
+      "Demonstration plots for new technologies",
+      "Farmer field schools",
+      "Group training programs",
+      "Digital extension services"
+    ]
+  },
+  "research_and_development": {
+    "emerging_threats": [
+      "New rust races monitoring",
+      "Insecticide resistance development",
+      "Climate change impact on pest dynamics",
+      "Invasive species surveillance"
+    ],
+    "innovative_solutions": [
+      "Precision application technologies",
+      "Biological control agent development",
+      "Resistant variety breeding",
+      "Digital monitoring systems",
+      "Sustainable intensification practices"
+    ]
+  }
+}

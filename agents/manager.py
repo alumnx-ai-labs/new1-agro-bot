@@ -11,6 +11,7 @@ from agents.stt_agent import STTAgent
 from agents.rag_agent import RAGAgent
 from agents.translator_agent import TranslatorAgent
 from agents.general_agent import GeneralAgent
+from agents.sme_agent import SMEAgent
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,7 +29,8 @@ class ManagerAgent:
         self.disease_agent = DiseaseDetectionAgent()
         self.stt_agent = STTAgent()
         self.translator_agent = TranslatorAgent()
-        self.general_agent = GeneralAgent()  # ADD THIS LINE
+        self.general_agent = GeneralAgent()
+        self.sme_agent = SMEAgent()
 
         # Initialize RAG agent with error handling
         try:
@@ -44,7 +46,8 @@ class ManagerAgent:
             'disease_detection': self.disease_agent,
             'speech_to_text': self.stt_agent,
             'translator': self.translator_agent,
-            'general_farming': self.general_agent,  # ADD THIS LINE
+            'general_farming': self.general_agent,
+            'sme_expert': self.sme_agent,
         }
         
         if rag_available:
@@ -245,6 +248,7 @@ class ManagerAgent:
             'type': 'processed',
             'language': 'english',
             'queryType': input_data.get('queryType'),
+            'sme_expert': input_data.get('sme_expert'),
             'farm_settings': input_data.get('farm_settings', {})
         })
         
@@ -256,6 +260,26 @@ class ManagerAgent:
 
     def process_logic_stage(self, session_id: str, processed_input: Dict[str, Any]) -> Dict[str, Any]:
         """Stage 2: Logic Processing"""
+        
+        # Check for SME expert request first
+        if processed_input.get('sme_expert'):
+            sme_expert = processed_input['sme_expert']
+            query = processed_input.get('text', '')
+            
+            if not query:
+                return {
+                    'type': 'error',
+                    'message': 'No query provided for SME expert consultation.',
+                    'agent': 'sme_agent'
+                }
+            
+            self.firestore_client.add_manager_thought(
+                session_id,
+                f"👨‍🌾 Consulting expert: {sme_expert}..."
+            )
+            
+            farm_settings = processed_input.get('farm_settings', {})
+            return self.sme_agent.query_expert(sme_expert, query, farm_settings)
         
         # If we already have disease detection result and no text query, return it
         if processed_input.get('disease_detection_result') and not processed_input.get('text'):
