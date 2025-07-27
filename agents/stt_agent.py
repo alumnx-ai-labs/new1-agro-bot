@@ -59,7 +59,7 @@ class STTAgent:
             
             # Create transcription prompt
             prompt = f"""
-            You are an expert transcription system. Please transcribe this audio recording accurately.
+            You are an expert transcription and translation system. Please transcribe this audio recording accurately.
 
             Language: {language_name}
             Context: Agricultural/farming conversation
@@ -69,7 +69,11 @@ class STTAgent:
             2. Use proper punctuation and capitalization
             3. Common agricultural terms may include: crops, diseases, fertilizers, pesticides, irrigation, harvest
             4. If unclear about a word, provide your best guess
-            5. Output ONLY the transcribed text with no additional comments
+            5. If the language is not English, also provide an English translation that preserves all context and meaning
+            6. Format your response as:
+            - If English: Just the transcription
+            - If non-English: "TRANSCRIPT: [original text]
+            ENGLISH: [English translation]"
 
             Transcribe this audio:
             """

@@ -186,38 +186,27 @@ class ManagerAgent:
                 "🎤 Transcribing audio..."
             )
             
-            # Transcribe audio with preferred language
-            stt_result = self.stt_agent.transcribe_audio(
-                input_data['audio_data'], 
-                original_language,
-                farm_settings
-            )
-            
-            if stt_result.get('success'):
-                transcript = stt_result['transcript']
+            # Handle audio input
+            if input_data.get('audio_data'):
+                self.firestore_client.add_manager_thought(
+                    session_id,
+                    "🎤 Transcribing audio..."
+                )
                 
-                # Translate to English if needed
-                if original_language.lower() not in ['english', 'en']:
-                    self.firestore_client.add_manager_thought(
-                        session_id,
-                        "🌐 Translating audio to English for processing..."
-                    )
+                # Transcribe audio with preferred language (includes translation if needed)
+                stt_result = self.stt_agent.transcribe_audio(
+                    input_data['audio_data'], 
+                    original_language,
+                    farm_settings
+                )
+                
+                if stt_result.get('success'):
+                    transcript = stt_result['transcript']
                     
-                    translation_result = self.translator_agent.translate(
-                        original_language, 'english', transcript, farm_settings
-                    )
-                    
-                    if translation_result.get('success'):
-                        english_text = translation_result['translated_text']
-                    else:
-                        english_text = transcript
+                    audio_text = transcript
+                    processed_data['original_transcript'] = transcript
                 else:
-                    english_text = transcript
-                    
-                audio_text = english_text
-                processed_data['original_transcript'] = transcript
-            else:
-                raise Exception(f"Audio transcription failed: {stt_result.get('error')}")
+                    raise Exception(f"Audio transcription failed: {stt_result.get('error')}")
         
         # Handle text input
         if input_data.get('text') or input_data.get('content'):
